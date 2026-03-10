@@ -11,6 +11,7 @@ interface Props {
 
 const { title, description = 'A content-heavy static site built with Astro and Tailwind CSS', image, ogType = 'website', pubDate } = Astro.props;
 const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : null;
+const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -50,8 +51,16 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : null
       <div class="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
         <a href="/" class="text-xl font-bold tracking-tight">AstroStatic</a>
         <div class="flex gap-6 text-sm font-medium">
-          <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</a>
-          <a href="/blog" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Blog</a>
+          <a
+            href="/"
+            aria-current={currentPath === '/' ? 'page' : undefined}
+            class={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors ${currentPath === '/' ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}`}
+          >Home</a>
+          <a
+            href="/blog"
+            aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}
+            class={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors ${currentPath.startsWith('/blog') ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}`}
+          >Blog</a>
         </div>
       </div>
     </nav>
