@@ -81,4 +81,4 @@ Tailwind CSS 4 is configured via the `@tailwindcss/vite` plugin in `astro.config
 ## Health Probes
 
 - **Post-build**: `dist/index.html` must exist
-- **Type check**: `npx astro check` (warning only)
+- **Type check**: `ASTRO_TELEMETRY_DISABLED=1 npx astro check` (warning only)
