@@ -14,6 +14,8 @@ src/
     BaseLayout.astro    # Base HTML layout with nav, footer, dark mode support
   pages/
     index.astro         # Landing page (hero, features grid, latest posts)
+    404.astro           # Custom 404 error page
+    rss.xml.ts          # RSS feed endpoint (/rss.xml)
     blog/
       index.astro       # Blog listing page
       [id].astro        # Individual blog post (dynamic route)
@@ -21,6 +23,7 @@ src/
     global.css          # Tailwind CSS import
 public/
   favicon.svg           # Site favicon
+  robots.txt            # Search engine crawler rules
 astro.config.mjs        # Astro config (static output, Tailwind vite plugin)
 tsconfig.json           # TypeScript config (strict mode)
 ```
