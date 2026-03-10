@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404 - Page Not Found - AstroStatic" description="The page you are looking for does not exist.">
+  <section class="mx-auto max-w-3xl px-4 py-32 text-center">
+    <p class="text-6xl font-extrabold text-blue-600 dark:text-blue-400">404</p>
+    <h1 class="mt-4 text-3xl font-bold">Page not found</h1>
+    <p class="mt-4 text-gray-600 dark:text-gray-400">
+      Sorry, we couldn&rsquo;t find the page you&rsquo;re looking for.
+    </p>
+    <a
+      href="/"
+      class="mt-8 inline-block rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+    >
+      Go home
+    </a>
+  </section>
+</BaseLayout>
