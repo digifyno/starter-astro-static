@@ -49,17 +49,17 @@ const currentPath = Astro.url.pathname;
     </a>
     <nav aria-label="Main navigation" class="border-b border-gray-200 dark:border-gray-800">
       <div class="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
-        <a href="/" class="text-xl font-bold tracking-tight">AstroStatic</a>
+        <a href="/" class="text-xl font-bold tracking-tight rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400">AstroStatic</a>
         <div class="flex gap-6 text-sm font-medium">
           <a
             href="/"
             aria-current={currentPath === '/' ? 'page' : undefined}
-            class={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors ${currentPath === '/' ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}`}
+            class={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400 rounded ${currentPath === '/' ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}`}
           >Home</a>
           <a
             href="/blog"
             aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}
-            class={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors ${currentPath.startsWith('/blog') ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}`}
+            class={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400 rounded ${currentPath.startsWith('/blog') ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}`}
           >Blog</a>
         </div>
       </div>
