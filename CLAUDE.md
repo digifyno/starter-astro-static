@@ -13,7 +13,7 @@ src/
   content.config.ts     # Content collection schemas (blog)
   content/blog/         # Markdown blog posts (frontmatter: title, description, date, tags)
   layouts/
-    BaseLayout.astro    # Base HTML layout with nav, footer, dark mode support
+    BaseLayout.astro    # Base HTML layout with nav (Home, Blog, Tags), footer, dark mode support
   pages/
     index.astro         # Landing page (hero, features grid, latest posts)
     404.astro           # Custom 404 error page
