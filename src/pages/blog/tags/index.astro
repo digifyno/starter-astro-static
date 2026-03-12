@@ -12,7 +12,7 @@ const tags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1] || a[0].locale
 
 <BaseLayout title="All Tags - AstroStatic" description="Browse all blog post tags.">
   <section class="mx-auto max-w-3xl px-4 py-16">
-    <a href="/blog" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">&larr; All posts</a>
+    <a href="/blog" class="text-sm text-blue-600 dark:text-blue-400 hover:underline rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400">&larr; All posts</a>
     <h1 class="mt-4 text-4xl font-bold">All Tags</h1>
     <p class="mt-2 text-gray-500 dark:text-gray-400">{tags.length} tag{tags.length !== 1 ? 's' : ''}</p>
     <div class="mt-8 flex flex-wrap gap-3">
