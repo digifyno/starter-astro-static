@@ -18,14 +18,17 @@ src/
     index.astro         # Landing page (hero, features grid, latest posts)
     404.astro           # Custom 404 error page
     rss.xml.ts          # RSS feed endpoint (/rss.xml)
+    robots.txt.ts       # Dynamic robots.txt with sitemap URL
     blog/
       index.astro       # Blog listing page
       [id].astro        # Individual blog post (dynamic route)
+      tags/
+        index.astro     # Tags index page listing all tags with post counts
+        [tag].astro     # Posts filtered by a single tag
   styles/
     global.css          # Tailwind CSS import
 public/
   favicon.svg           # Site favicon
-  robots.txt            # Search engine crawler rules
 astro.config.mjs        # Astro config (static output, Tailwind vite plugin)
 tsconfig.json           # TypeScript config (strict mode)
 ```
@@ -37,6 +40,12 @@ npm run dev       # Start dev server at localhost:4321
 npm run build     # Build static site to dist/
 npm run preview   # Preview built site locally
 ```
+
+## Environment Variables
+
+| Variable   | Default               | Purpose |
+|------------|-----------------------|---------|
+| `SITE_URL` | `https://example.com` | Canonical base URL used in sitemap, OG tags, and canonical `<link>`. Set to your production domain before deploying. |
 
 ## Content Collections
 
@@ -74,6 +83,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ## Adding Blog Posts
 
 Create a new `.md` file in `src/content/blog/` with the required frontmatter. It will automatically appear in the blog listing and get its own page at `/blog/<filename>`.
+
+Tags in frontmatter automatically generate tag pages:
+- `/blog/tags` — index of all tags with post counts
+- `/blog/tags/<tag>` — posts filtered by that tag
+- Tag chips on the blog listing and individual post pages link to these routes.
 
 ## Styling
 
