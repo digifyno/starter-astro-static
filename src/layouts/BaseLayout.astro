@@ -58,9 +58,14 @@ const currentPath = Astro.url.pathname;
           >Home</a>
           <a
             href="/blog"
-            aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}
-            class={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400 rounded ${currentPath.startsWith('/blog') ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}`}
+            aria-current={currentPath === '/blog' || (currentPath.startsWith('/blog/') && !currentPath.startsWith('/blog/tags')) ? 'page' : undefined}
+            class={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400 rounded ${currentPath === '/blog' || (currentPath.startsWith('/blog/') && !currentPath.startsWith('/blog/tags')) ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}`}
           >Blog</a>
+          <a
+            href="/blog/tags"
+            aria-current={currentPath.startsWith('/blog/tags') ? 'page' : undefined}
+            class={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400 rounded ${currentPath.startsWith('/blog/tags') ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}`}
+          >Tags</a>
         </div>
       </div>
     </nav>
