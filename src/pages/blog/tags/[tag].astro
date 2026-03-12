@@ -48,7 +48,7 @@ const { tag, posts } = Astro.props;
               ))}
             </div>
           )}
-          <a href={`/blog/${post.id}`} class="mt-3 inline-block text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+          <a href={`/blog/${post.id}`} aria-label={`Read more about ${post.data.title}`} class="mt-3 inline-block text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
             Read more &rarr;
           </a>
         </article>
