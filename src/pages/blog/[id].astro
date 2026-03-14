@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -17,7 +18,7 @@ const { Content } = await render(post);
 <BaseLayout
   title={`${post.data.title} - AstroStatic`}
   description={post.data.description}
-  image={post.data.image}
+  image={post.data.image?.src}
   type="article"
   publishedDate={post.data.date}
   author={post.data.author}
@@ -42,6 +43,17 @@ const { Content } = await render(post);
         </div>
       )}
     </header>
+    {post.data.image && (
+      <Image
+        src={post.data.image}
+        alt={post.data.title}
+        width={1200}
+        height={630}
+        loading="eager"
+        fetchpriority="high"
+        class="w-full rounded-xl mb-8 object-cover"
+      />
+    )}
     <div class="prose prose-gray dark:prose-invert max-w-none">
       <Content />
     </div>
