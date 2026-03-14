@@ -3,13 +3,14 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  const tagSet = new Set(posts.flatMap((p) => p.data.tags));
+  const isDev = import.meta.env.DEV;
+  const allPosts = await getCollection('blog', ({ data }) => isDev || !data.draft);
+  const tagSet = new Set(allPosts.flatMap((p) => p.data.tags));
   return [...tagSet].map((tag) => ({
     params: { tag },
     props: {
       tag,
-      posts: posts
+      posts: allPosts
         .filter((p) => p.data.tags.includes(tag))
         .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
     },
