@@ -14,7 +14,14 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BaseLayout title={`${post.data.title} - AstroStatic`} description={post.data.description} ogType="article" pubDate={post.data.date}>
+<BaseLayout
+  title={`${post.data.title} - AstroStatic`}
+  description={post.data.description}
+  image={post.data.image}
+  type="article"
+  publishedDate={post.data.date}
+  author={post.data.author}
+>
   <article class="mx-auto max-w-3xl px-4 py-16">
     <header class="mb-8">
       <a href="/blog" class="text-sm text-blue-600 dark:text-blue-400 hover:underline rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400">&larr; Back to blog</a>
