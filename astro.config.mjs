@@ -14,4 +14,12 @@ export default defineConfig({
       sourcemap: false,
     },
   },
+  csp: {
+    algorithm: 'SHA-256',
+    directives: {
+      'default-src': ["'self'"],
+      'img-src': ["'self'", 'data:'],
+      'font-src': ["'self'"],
+    },
+  },
 });
