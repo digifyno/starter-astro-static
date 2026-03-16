@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
@@ -6,6 +6,18 @@ export default defineConfig({
   site: process.env.SITE_URL ?? 'https://example.com',
   output: 'static',
   integrations: [sitemap()],
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Inter',
+      cssVariable: '--font-inter',
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Fira Code',
+      cssVariable: '--font-mono',
+    },
+  ],
   vite: {
     plugins: [tailwindcss()],
     build: {
