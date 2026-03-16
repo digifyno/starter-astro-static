@@ -1,11 +1,15 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
 
 export default defineConfig({
   site: process.env.SITE_URL ?? 'https://example.com',
   output: 'static',
   integrations: [sitemap()],
+  markdown: {
+    remarkPlugins: [remarkReadingTime],
+  },
   fonts: [
     {
       provider: fontProviders.fontsource(),
