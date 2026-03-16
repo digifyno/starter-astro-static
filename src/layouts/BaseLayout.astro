@@ -44,6 +44,7 @@ const currentPath = Astro.url.pathname;
       author={author}
     />
     <link rel="alternate" type="application/rss+xml" title="AstroStatic Blog RSS Feed" href="/rss.xml" />
+    <slot name="head" />
   </head>
   <body class="min-h-screen bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 antialiased">
     <a

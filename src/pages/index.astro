@@ -7,16 +7,27 @@ const posts = (await getCollection('blog')).sort(
 ).slice(0, 3);
 
 const features = [
-  { title: 'Lightning Fast', description: 'Zero JavaScript by default. Ship only what you need for blazing-fast load times.', icon: '\u26A1' },
-  { title: 'SEO Optimized', description: 'Static HTML output with full control over meta tags, structured data, and sitemap.', icon: '\uD83D\uDD0D' },
-  { title: 'Content Collections', description: 'Type-safe Markdown and MDX content with schema validation built in.', icon: '\uD83D\uDCDA' },
-  { title: 'Tailwind CSS', description: 'Utility-first CSS framework for rapid, consistent, and responsive styling.', icon: '\uD83C\uDFA8' },
-  { title: 'TypeScript', description: 'Full TypeScript support with strict mode for a safer, more productive workflow.', icon: '\uD83D\uDEE1\uFE0F' },
-  { title: 'Deploy Anywhere', description: 'Static output deploys to any CDN, server, or hosting platform.', icon: '\uD83C\uDF0D' },
+  { title: 'Lightning Fast', description: 'Zero JavaScript by default. Ship only what you need for blazing-fast load times.', icon: '⚡' },
+  { title: 'SEO Optimized', description: 'Static HTML output with full control over meta tags, structured data, and sitemap.', icon: '🔍' },
+  { title: 'Content Collections', description: 'Type-safe Markdown and MDX content with schema validation built in.', icon: '📚' },
+  { title: 'Tailwind CSS', description: 'Utility-first CSS framework for rapid, consistent, and responsive styling.', icon: '🎨' },
+  { title: 'TypeScript', description: 'Full TypeScript support with strict mode for a safer, more productive workflow.', icon: '🛡️' },
+  { title: 'Deploy Anywhere', description: 'Static output deploys to any CDN, server, or hosting platform.', icon: '🌍' },
 ];
+
+const siteUrl = Astro.site?.href ?? Astro.url.origin + '/';
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "AstroStatic",
+  "url": siteUrl,
+};
 ---
 
 <BaseLayout title="AstroStatic - Content-First Static Sites">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+  </Fragment>
   <!-- Hero -->
   <section class="mx-auto max-w-5xl px-4 py-20 text-center">
     <h1 class="text-5xl font-extrabold tracking-tight sm:text-6xl">
