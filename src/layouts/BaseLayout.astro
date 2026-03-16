@@ -53,7 +53,7 @@ const currentPath = Astro.url.pathname;
     >
       Skip to main content
     </a>
-    <nav aria-label="Main navigation" class="border-b border-gray-200 dark:border-gray-800">
+    <nav aria-label="Main navigation" class="border-b border-gray-200 dark:border-gray-800" data-pagefind-ignore>
       <div class="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
         <a href="/" class="text-xl font-bold tracking-tight rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400">AstroStatic</a>
         <div class="flex gap-6 text-sm font-medium">
@@ -72,6 +72,11 @@ const currentPath = Astro.url.pathname;
             aria-current={currentPath.startsWith('/blog/tags') ? 'page' : undefined}
             class={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400 rounded ${currentPath.startsWith('/blog/tags') ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}`}
           >Tags</a>
+          <a
+            href="/search"
+            aria-current={currentPath === '/search' ? 'page' : undefined}
+            class={`hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400 rounded ${currentPath === '/search' ? 'text-blue-600 dark:text-blue-400 font-semibold' : ''}`}
+          >Search</a>
         </div>
       </div>
     </nav>
@@ -80,7 +85,7 @@ const currentPath = Astro.url.pathname;
       <slot />
     </main>
 
-    <footer class="border-t border-gray-200 dark:border-gray-800 mt-20">
+    <footer class="border-t border-gray-200 dark:border-gray-800 mt-20" data-pagefind-ignore>
       <div class="mx-auto max-w-5xl px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
         <p>&copy; {new Date().getFullYear()} AstroStatic. Built with Astro &amp; Tailwind CSS.</p>
       </div>
