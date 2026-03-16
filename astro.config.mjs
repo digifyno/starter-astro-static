@@ -24,6 +24,9 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    ssr: {
+      external: ['@resvg/resvg-js'],
+    },
     build: {
       // Explicitly disable sourcemaps to prevent .map file exposure (CVE-2024-56159 defense-in-depth)
       // Sourcemaps in dist/ can expose server source code to unauthenticated attackers.
