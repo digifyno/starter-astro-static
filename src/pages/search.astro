@@ -1,15 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Search">
+<BaseLayout title="Search - AstroStatic">
+  <Fragment slot="head">
+    <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  </Fragment>
   <section class="mx-auto max-w-5xl px-4 py-16">
     <h1 class="text-3xl font-bold mb-8">Search</h1>
     <div id="search"></div>
   </section>
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', () => {
+      // @ts-ignore: PagefindUI is loaded via /pagefind/pagefind-ui.js at runtime
+      new PagefindUI({ element: '#search', showImages: false });
+    });
+  </script>
 </BaseLayout>
-<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    new PagefindUI({ element: '#search', showImages: false });
-  });
-</script>
