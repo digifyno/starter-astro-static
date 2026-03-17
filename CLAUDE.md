@@ -11,7 +11,7 @@ Includes `@astrojs/rss` (RSS feed at `/rss.xml`), `@astrojs/sitemap` (auto-gener
 ```
 src/
   components/
-    SEO.astro          # Open Graph, Twitter Card, canonical, JSON-LD meta (added to all pages)
+    SEO.astro          # Open Graph, Twitter Card, and canonical meta (added to all pages)
   plugins/
     remark-reading-time.mjs  # Custom remark plugin: injects minutesRead into post frontmatter
   content.config.ts     # Content collection schemas (blog)
@@ -23,10 +23,10 @@ src/
     404.astro           # Custom 404 error page
     rss.xml.ts          # RSS feed endpoint (/rss.xml)
     robots.txt.ts       # Dynamic robots.txt with sitemap URL
-    search.astro        # Pagefind full-text search page (/search)
+    search.astro        # Pagefind full-text search page (/search); requires production build (unavailable in dev)
     blog/
       index.astro       # Blog listing page
-      [id].astro        # Individual blog post (dynamic route)
+      [id].astro        # Individual blog post with JSON-LD BlogPosting + BreadcrumbList schemas (dynamic route)
       [id]/
         og.png.ts       # Per-post OG image generation via Satori + Resvg
       tags/
@@ -96,9 +96,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 Create a new `.md` file in `src/content/blog/` with the required frontmatter. It will automatically appear in the blog listing and get its own page at `/blog/<filename>`.
 
 Tags in frontmatter automatically generate tag pages:
-- `/blog/tags` — index of all tags with post counts
-- `/blog/tags/<tag>` — posts filtered by that tag
+- `/blog/tags` — index of all tags with post counts (published posts only)
+- `/blog/tags/<tag>` — posts filtered by that tag (published posts only)
 - Tag chips on the blog listing and individual post pages link to these routes.
+- Draft posts are visible in all tag pages during dev (`npm run dev`) but excluded in production builds.
 
 ## Styling
 
