@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Content-heavy static site built with Astro 5, Tailwind CSS 4, and TypeScript. Outputs pre-rendered HTML with zero JavaScript by default.
+Content-heavy static site built with Astro 6, Tailwind CSS 4, and TypeScript. Outputs pre-rendered HTML with zero JavaScript by default.
 
 Includes `@astrojs/rss` (RSS feed at `/rss.xml`), `@astrojs/sitemap` (auto-generated sitemap), and `@tailwindcss/typography` (prose styling for blog posts).
 
@@ -10,18 +10,25 @@ Includes `@astrojs/rss` (RSS feed at `/rss.xml`), `@astrojs/sitemap` (auto-gener
 
 ```
 src/
+  components/
+    SEO.astro          # Open Graph, Twitter Card, canonical, JSON-LD meta (added to all pages)
+  plugins/
+    remark-reading-time.mjs  # Custom remark plugin: injects minutesRead into post frontmatter
   content.config.ts     # Content collection schemas (blog)
   content/blog/         # Markdown blog posts (frontmatter: title, description, date, tags)
   layouts/
-    BaseLayout.astro    # Base HTML layout with nav (Home, Blog, Tags), footer, dark mode support
+    BaseLayout.astro    # Base HTML layout with nav (Home, Blog, Tags, Search), footer, dark mode support
   pages/
     index.astro         # Landing page (hero, features grid, latest posts)
     404.astro           # Custom 404 error page
     rss.xml.ts          # RSS feed endpoint (/rss.xml)
     robots.txt.ts       # Dynamic robots.txt with sitemap URL
+    search.astro        # Pagefind full-text search page (/search)
     blog/
       index.astro       # Blog listing page
       [id].astro        # Individual blog post (dynamic route)
+      [id]/
+        og.png.ts       # Per-post OG image generation via Satori + Resvg
       tags/
         index.astro     # Tags index page listing all tags with post counts
         [tag].astro     # Posts filtered by a single tag
@@ -29,6 +36,7 @@ src/
     global.css          # Tailwind CSS import
 public/
   favicon.svg           # Site favicon
+  og-default.png        # Default OG image (fallback for non-post pages)
 astro.config.mjs        # Astro config (static output, Tailwind vite plugin)
 tsconfig.json           # TypeScript config (strict mode)
 ```
@@ -37,7 +45,7 @@ tsconfig.json           # TypeScript config (strict mode)
 
 ```bash
 npm run dev       # Start dev server at localhost:4321
-npm run build     # Build static site to dist/
+npm run build     # Build static site to dist/ AND run Pagefind search indexing
 npm run preview   # Preview built site locally
 ```
 
@@ -57,6 +65,9 @@ title: "Post Title"
 description: "Brief description"
 date: 2025-01-15
 tags: ["tag1", "tag2"]
+author: "Author Name"        # optional — used in JSON-LD
+image: ./cover.png           # optional — co-located image for OG and post header
+draft: false                 # optional — hides from production builds
 ---
 ```
 
