@@ -10,6 +10,11 @@ interface Props {
   type?: 'website' | 'article';
   publishedDate?: Date;
   author?: string;
+  articleMeta?: {
+    publishedTime?: string; // ISO 8601
+    author?: string;
+    tags?: string[];
+  };
 }
 
 const {
@@ -19,6 +24,7 @@ const {
   type = 'website',
   publishedDate,
   author,
+  articleMeta,
 } = Astro.props;
 const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url;
 const currentPath = Astro.url.pathname;
@@ -43,6 +49,15 @@ const currentPath = Astro.url.pathname;
       publishedDate={publishedDate}
       author={author}
     />
+    {type === 'article' && articleMeta?.publishedTime && (
+      <meta property="article:published_time" content={articleMeta.publishedTime} />
+    )}
+    {type === 'article' && articleMeta?.author && (
+      <meta property="article:author" content={articleMeta.author} />
+    )}
+    {type === 'article' && articleMeta?.tags?.map(tag => (
+      <meta property="article:tag" content={tag} />
+    ))}
     <link rel="alternate" type="application/rss+xml" title="AstroStatic Blog RSS Feed" href="/rss.xml" />
     <slot name="head" />
   </head>

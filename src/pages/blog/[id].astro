@@ -48,6 +48,11 @@ const breadcrumbSchema = {
   type="article"
   publishedDate={post.data.date}
   author={post.data.author}
+  articleMeta={{
+    publishedTime: post.data.date.toISOString(),
+    author: post.data.author,
+    tags: post.data.tags,
+  }}
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
