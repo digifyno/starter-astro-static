@@ -2,7 +2,8 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const posts = await getCollection('blog');
+const isDev = import.meta.env.DEV;
+const posts = await getCollection('blog', ({ data }) => isDev || !data.draft);
 const tagCounts = posts.flatMap((p) => p.data.tags).reduce((acc, tag) => {
   acc[tag] = (acc[tag] || 0) + 1;
   return acc;
