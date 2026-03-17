@@ -5,8 +5,6 @@ interface Props {
   canonicalURL?: URL | string;
   image?: string;
   type?: 'website' | 'article';
-  publishedDate?: Date;
-  author?: string;
 }
 
 const {
@@ -15,31 +13,10 @@ const {
   canonicalURL = Astro.url,
   image = '/og-default.png',
   type = 'website',
-  publishedDate,
-  author,
 } = Astro.props;
 
 const siteUrl = import.meta.env.SITE_URL || Astro.site?.toString() || '';
 const absoluteImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
-
-const jsonLd = type === 'article'
-  ? JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'BlogPosting',
-      headline: title,
-      description,
-      image: absoluteImage,
-      datePublished: publishedDate?.toISOString(),
-      author: author ? { '@type': 'Person', name: author } : undefined,
-      url: canonicalURL.toString(),
-    })
-  : JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      name: title,
-      description,
-      url: siteUrl,
-    });
 ---
 
 <!-- Canonical -->
@@ -57,6 +34,3 @@ const jsonLd = type === 'article'
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={absoluteImage} />
-
-<!-- JSON-LD Structured Data -->
-<script type="application/ld+json" set:html={jsonLd} />
