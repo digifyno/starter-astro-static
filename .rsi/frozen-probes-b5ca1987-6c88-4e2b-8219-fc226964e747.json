@@ -1,0 +1,1 @@
+[{"id":"dist-exists","name":"Build output exists","path":"dist/index.html","type":"file_exists","enabled":true,"runWhen":"post","timeoutMs":5000,"failureMode":"block"},{"id":"astro-check","name":"Astro type check","type":"command","command":"ASTRO_TELEMETRY_DISABLED=1 npx astro check","enabled":true,"runWhen":"post","timeoutMs":60000,"failureMode":"warn"}]
