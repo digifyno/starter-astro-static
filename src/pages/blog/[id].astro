@@ -15,7 +15,6 @@ const { post } = Astro.props;
 const { Content, remarkPluginFrontmatter } = await render(post);
 const minutesRead: string = remarkPluginFrontmatter.minutesRead ?? '1 min read';
 
-const AUTHOR_NAME = 'Site Author';
 const siteBase = Astro.site ?? new URL(Astro.url.origin);
 const postUrl = new URL(Astro.url.pathname, siteBase).href;
 const ogImageUrl = new URL(`/blog/${post.id}/og.png`, siteBase).href;
@@ -26,7 +25,7 @@ const blogPostingSchema = {
   "headline": post.data.title,
   "description": post.data.description,
   "datePublished": post.data.date.toISOString(),
-  "author": { "@type": "Person", "name": AUTHOR_NAME },
+  "author": { "@type": "Person", "name": post.data.author ?? 'Site Author' },
   "url": postUrl,
 };
 
