@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const isDev = import.meta.env.DEV;
@@ -18,6 +18,13 @@ export async function getStaticPaths() {
 }
 
 const { tag, posts } = Astro.props;
+
+const readingTimes = await Promise.all(
+  posts.map(async (post) => {
+    const { remarkPluginFrontmatter } = await render(post);
+    return (remarkPluginFrontmatter.minutesRead as string) ?? '1 min read';
+  })
+);
 ---
 
 <BaseLayout title={`Posts tagged "${tag}" - AstroStatic`} description={`All blog posts tagged with ${tag}.`}>
@@ -26,11 +33,15 @@ const { tag, posts } = Astro.props;
     <h1 class="mt-4 text-4xl font-bold">Tag: <span class="text-blue-600 dark:text-blue-400">{tag}</span></h1>
     <p class="mt-2 text-gray-500 dark:text-gray-400">{posts.length} post{posts.length !== 1 ? 's' : ''}</p>
     <div class="mt-8 space-y-8">
-      {posts.map((post) => (
+      {posts.map((post, i) => (
         <article class="border-b border-gray-200 dark:border-gray-800 pb-8">
-          <time datetime={post.data.date.toISOString().split('T')[0]} class="text-sm text-gray-500 dark:text-gray-400">
-            {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-          </time>
+          <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+            <time datetime={post.data.date.toISOString().split('T')[0]}>
+              {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </time>
+            <span aria-hidden="true">&middot;</span>
+            <span>{readingTimes[i]}</span>
+          </div>
           <h2 class="mt-1 text-2xl font-semibold">
             <a href={`/blog/${post.id}`} class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400">
               {post.data.title}
