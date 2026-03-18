@@ -113,3 +113,22 @@ Tailwind CSS 4 is configured via the `@tailwindcss/vite` plugin in `astro.config
 
 - **Post-build**: `dist/index.html` must exist
 - **Type check**: `ASTRO_TELEMETRY_DISABLED=1 npx astro check` (warning only)
+
+## Content Security Policy
+
+CSP is configured in `astro.config.mjs` via Astro 6's `security.csp` option (not a `<meta>` tag). Current policy: `default-src 'self'` with `wasm-unsafe-eval` added to `script-src` to support Pagefind's WebAssembly search runtime.
+
+To extend the policy, edit the `security.csp` block in `astro.config.mjs`:
+
+```js
+security: {
+  csp: {
+    algorithm: 'SHA-256',
+    directives: ["default-src 'self'", "img-src 'self' data:", "font-src 'self'"],
+    scriptDirective: {
+      resources: ["'self'", "'wasm-unsafe-eval'"],
+      // add further resource origins here
+    },
+  },
+},
+```

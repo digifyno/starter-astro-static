@@ -12,7 +12,7 @@ A content-first static site template with blog, tags, RSS, and dark mode.
 - **RSS feed** at `/rss.xml`
 - **Sitemap** auto-generated at `/sitemap-index.xml`
 - **Dark mode** via system preference detection
-- **CSP meta tag** for content security
+- **Built-in Astro 6 CSP** via `astro.config.mjs` (includes `wasm-unsafe-eval` for Pagefind)
 - **Accessible focus-visible styles** for keyboard navigation
 - **Pagefind search** — full-text static search at `/search`
 - **Per-post OG images** — generated at build time via Satori
