@@ -19,7 +19,8 @@ function loadFont(weight: 'Light' | 'Regular' | 'Bold'): Buffer {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await getCollection('blog');
+  const isDev = import.meta.env.DEV;
+  const posts = await getCollection('blog', ({ data }) => isDev || !data.draft);
   return posts.map((post) => ({ params: { id: post.id } }));
 };
 
