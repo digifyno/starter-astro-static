@@ -60,7 +60,7 @@ const readingTimes = await Promise.all(
               ))}
             </div>
           )}
-          <a href={`/blog/${post.id}`} aria-label={`Read more about ${post.data.title}`} class="mt-3 inline-block text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+          <a href={`/blog/${post.id}`} aria-label={`Read more about ${post.data.title}`} class="mt-3 inline-block text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400">
             Read more &rarr;
           </a>
         </article>
