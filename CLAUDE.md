@@ -17,13 +17,13 @@ src/
   content.config.ts     # Content collection schemas (blog)
   content/blog/         # Markdown blog posts (frontmatter: title, description, date, tags)
   layouts/
-    BaseLayout.astro    # Base HTML layout with nav (Home, Blog, Tags, Search), footer, dark mode support
+    BaseLayout.astro    # Base HTML layout with nav (Home, Blog, Tags, Search), footer, dark mode support, skip navigation link for WCAG 2.4.1 compliance, and focus-visible ring styles on interactive elements
   pages/
     index.astro         # Landing page (hero, features grid, latest posts)
     404.astro           # Custom 404 error page
     rss.xml.ts          # RSS feed endpoint (/rss.xml)
     robots.txt.ts       # Dynamic robots.txt with sitemap URL
-    search.astro        # Pagefind full-text search page (/search); requires production build (unavailable in dev)
+    search.astro        # Pagefind full-text search page (/search); requires production build (unavailable in dev); ARIA live region for screen reader result announcements
     blog/
       index.astro       # Blog listing page
       [id].astro        # Individual blog post with JSON-LD BlogPosting + BreadcrumbList schemas (dynamic route)
@@ -31,13 +31,13 @@ src/
         og.png.ts       # Per-post OG image generation via Satori + Resvg
       tags/
         index.astro     # Tags index page listing all tags with post counts
-        [tag].astro     # Posts filtered by a single tag
+        [tag].astro     # Posts filtered by a single tag (with reading time display)
   styles/
     global.css          # Tailwind CSS import
 public/
   favicon.svg           # Site favicon
   og-default.png        # Default OG image (fallback for non-post pages)
-astro.config.mjs        # Astro config (static output, Tailwind vite plugin, Inter+FiraCode fonts via fontsource, sourcemaps disabled)
+astro.config.mjs        # Astro config (static output, Tailwind vite plugin, Inter+FiraCode fonts via @astrojs/fonts (Astro 6 Fonts API), sourcemaps disabled)
 tsconfig.json           # TypeScript config (strict mode)
 ```
 
