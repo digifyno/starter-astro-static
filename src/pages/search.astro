@@ -8,12 +8,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="mx-auto max-w-5xl px-4 py-16">
     <h1 class="text-3xl font-bold mb-8">Search</h1>
     <div id="search"></div>
+    <div
+      id="search-status"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      class="sr-only"
+    ></div>
   </section>
   <script is:inline src="/pagefind/pagefind-ui.js"></script>
   <script is:inline>
     window.addEventListener('DOMContentLoaded', () => {
       // @ts-ignore: PagefindUI is loaded via /pagefind/pagefind-ui.js at runtime
       new PagefindUI({ element: '#search', showImages: false });
+
+      const input = document.querySelector('.pagefind-ui__search-input');
+      const status = document.getElementById('search-status');
+      if (input && status) {
+        input.addEventListener('input', () => {
+          setTimeout(() => {
+            const results = document.querySelectorAll('.pagefind-ui__result');
+            status.textContent = results.length
+              ? `${results.length} result${results.length === 1 ? '' : 's'} found`
+              : input.value ? 'No results found' : '';
+          }, 300);
+        });
+      }
     });
   </script>
 </BaseLayout>
