@@ -37,7 +37,7 @@ src/
 public/
   favicon.svg           # Site favicon
   og-default.png        # Default OG image (fallback for non-post pages)
-astro.config.mjs        # Astro config (static output, Tailwind vite plugin)
+astro.config.mjs        # Astro config (static output, Tailwind vite plugin, Inter+FiraCode fonts via fontsource, sourcemaps disabled)
 tsconfig.json           # TypeScript config (strict mode)
 ```
 
