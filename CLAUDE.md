@@ -34,11 +34,17 @@ src/
         [tag].astro     # Posts filtered by a single tag (with reading time display)
   styles/
     global.css          # Tailwind CSS import
+  utils/
+    format-date.ts      # Shared date formatting utility (used by blog listing, tag pages, post pages)
+  tests/
+    rss.test.ts         # Unit tests for RSS feed generation
+    robots.test.ts      # Unit tests for robots.txt generation
 public/
   favicon.svg           # Site favicon
   og-default.png        # Default OG image (fallback for non-post pages)
 astro.config.mjs        # Astro config (static output, Tailwind vite plugin, Inter+FiraCode fonts via @astrojs/fonts (Astro 6 Fonts API), sourcemaps disabled)
 tsconfig.json           # TypeScript config (strict mode)
+vitest.config.ts        # Vitest configuration (includes src/**/*.test.ts and src/**/*.test.mjs)
 ```
 
 ## Commands
@@ -47,6 +53,7 @@ tsconfig.json           # TypeScript config (strict mode)
 npm run dev       # Start dev server at localhost:4321
 npm run build     # Build static site to dist/ AND run Pagefind search indexing
 npm run preview   # Preview built site locally
+npm test          # Run unit tests (vitest)
 ```
 
 ## Environment Variables
