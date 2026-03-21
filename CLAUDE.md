@@ -15,6 +15,8 @@ src/
   plugins/
     remark-reading-time.mjs  # Custom remark plugin: injects minutesRead into post frontmatter
   content.config.ts     # Content collection schemas (blog)
+  content.schema.test.ts  # Unit tests for content collection schema (Zod validation)
+  draft-filter.test.ts    # Unit tests for draft post filtering logic
   content/blog/         # Markdown blog posts (frontmatter: title, description, date, tags)
   layouts/
     BaseLayout.astro    # Base HTML layout with nav (Home, Blog, Tags, Search), footer, dark mode support, skip navigation link for WCAG 2.4.1 compliance, and focus-visible ring styles on interactive elements
@@ -36,6 +38,7 @@ src/
     global.css          # Tailwind CSS import
   utils/
     format-date.ts      # Shared date formatting utility (used by blog listing, tag pages, post pages)
+    date.test.ts        # Unit tests for date formatting utility
   tests/
     rss.test.ts         # Unit tests for RSS feed generation
     robots.test.ts      # Unit tests for robots.txt generation
@@ -44,7 +47,7 @@ public/
   og-default.png        # Default OG image (fallback for non-post pages)
 astro.config.mjs        # Astro config (static output, Tailwind vite plugin, Inter+FiraCode fonts via @astrojs/fonts (Astro 6 Fonts API), sourcemaps disabled)
 tsconfig.json           # TypeScript config (strict mode)
-vitest.config.ts        # Vitest configuration (includes src/**/*.test.ts and src/**/*.test.mjs)
+vitest.config.ts        # Vitest configuration (includes src/**/*.test.ts and src/**/*.test.mjs; coverage via v8 provider)
 ```
 
 ## Commands
