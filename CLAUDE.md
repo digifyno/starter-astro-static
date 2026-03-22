@@ -14,6 +14,7 @@ src/
     SEO.astro          # Open Graph, Twitter Card, and canonical meta (added to all pages)
   plugins/
     remark-reading-time.mjs  # Custom remark plugin: injects minutesRead (string, e.g. "5 min read") into remarkPluginFrontmatter — access via (await render(post)).remarkPluginFrontmatter.minutesRead
+    remark-reading-time.test.mjs  # Unit tests for the reading-time remark plugin (co-located, .mjs to match plugin format)
   content.config.ts     # Content collection schemas (blog)
   content.schema.test.ts  # Unit tests for content collection schema (Zod validation)
   draft-filter.test.ts    # Unit tests for draft post filtering logic
@@ -30,7 +31,7 @@ src/
       index.astro       # Blog listing page
       [id].astro        # Individual blog post with JSON-LD BlogPosting + BreadcrumbList schemas (dynamic route)
       [id]/
-        og.png.ts       # Per-post OG image generation via Satori + Resvg
+        og.png.ts       # Per-post OG image generation via Satori + Resvg; draft posts excluded in production builds
       tags/
         index.astro     # Tags index page listing all tags with post counts
         [tag].astro     # Posts filtered by a single tag (with reading time display)
@@ -63,10 +64,11 @@ npm test          # Run unit tests (vitest)
 ## Testing
 
 ### File placement convention
-- **Unit tests** (utilities, schemas, pure functions): co-located `.test.ts` next to the file under test.
+- **Unit tests** (utilities, schemas, pure functions): co-located `.test.ts` (or `.test.mjs` for ESM-only modules) next to the file under test.
   - `src/utils/date.test.ts` — tests `format-date.ts`
   - `src/content.schema.test.ts` — tests the content collection schema
   - `src/draft-filter.test.ts` — tests draft filtering logic
+  - `src/plugins/remark-reading-time.test.mjs` — tests the reading-time remark plugin
 - **Integration tests** (routes, endpoints, multi-module flows): `src/tests/`
   - `src/tests/rss.test.ts` — tests the RSS feed endpoint
   - `src/tests/robots.test.ts` — tests the robots.txt endpoint
