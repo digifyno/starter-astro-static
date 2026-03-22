@@ -13,7 +13,7 @@ src/
   components/
     SEO.astro          # Open Graph, Twitter Card, and canonical meta (added to all pages)
   plugins/
-    remark-reading-time.mjs  # Custom remark plugin: injects minutesRead into post frontmatter
+    remark-reading-time.mjs  # Custom remark plugin: injects minutesRead (string, e.g. "5 min read") into remarkPluginFrontmatter — access via (await render(post)).remarkPluginFrontmatter.minutesRead
   content.config.ts     # Content collection schemas (blog)
   content.schema.test.ts  # Unit tests for content collection schema (Zod validation)
   draft-filter.test.ts    # Unit tests for draft post filtering logic
@@ -57,6 +57,25 @@ npm run dev       # Start dev server at localhost:4321
 npm run build     # Build static site to dist/ AND run Pagefind search indexing
 npm run preview   # Preview built site locally
 npm test          # Run unit tests (vitest)
+```
+
+
+## Testing
+
+### File placement convention
+- **Unit tests** (utilities, schemas, pure functions): co-located `.test.ts` next to the file under test.
+  - `src/utils/date.test.ts` — tests `format-date.ts`
+  - `src/content.schema.test.ts` — tests the content collection schema
+  - `src/draft-filter.test.ts` — tests draft filtering logic
+- **Integration tests** (routes, endpoints, multi-module flows): `src/tests/`
+  - `src/tests/rss.test.ts` — tests the RSS feed endpoint
+  - `src/tests/robots.test.ts` — tests the robots.txt endpoint
+
+### Running tests
+
+```bash
+npm test                    # Run all tests (vitest)
+npm test -- --coverage      # Run tests with v8 coverage report
 ```
 
 ## Environment Variables
