@@ -26,7 +26,7 @@ src/
     404.astro           # Custom 404 error page
     rss.xml.ts          # RSS feed endpoint (/rss.xml)
     robots.txt.ts       # Dynamic robots.txt with sitemap URL
-    search.astro        # Pagefind full-text search page (/search); requires production build (unavailable in dev); ARIA live region for screen reader result announcements
+    search.astro        # Pagefind full-text search page (/search); requires production build (shows dev-mode notice in dev); ARIA live region for screen reader result announcements
     blog/
       index.astro       # Blog listing page
       [id].astro        # Individual blog post with JSON-LD BlogPosting + BreadcrumbList schemas (dynamic route)
@@ -72,6 +72,8 @@ npm test          # Run unit tests (vitest)
 - **Integration tests** (routes, endpoints, multi-module flows): `src/tests/`
   - `src/tests/rss.test.ts` — tests the RSS feed endpoint
   - `src/tests/robots.test.ts` — tests the robots.txt endpoint
+  - `src/tests/jsonld.test.ts` — tests JSON-LD BlogPosting and BreadcrumbList schema structure for blog post pages
+  - `src/tests/og-image.test.ts` — tests OG image `getStaticPaths` draft filtering (excludes drafts in production, includes in dev)
 
 ### Running tests
 
