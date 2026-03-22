@@ -92,3 +92,93 @@ describe('blog content schema', () => {
     }
   });
 });
+
+// ---------------------------------------------------------------------------
+// Optional field edge cases (added to expand coverage)
+// ---------------------------------------------------------------------------
+
+describe('blog content schema — optional fields', () => {
+  it('accepts a post with an author field', () => {
+    const result = blogSchema.safeParse({
+      title: 'Authored Post',
+      description: 'Written by someone',
+      date: '2025-06-01',
+      author: 'Jane Doe',
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.author).toBe('Jane Doe');
+    }
+  });
+
+  it('accepts a post without an author field (author is optional)', () => {
+    const result = blogSchema.safeParse({
+      title: 'Authorless Post',
+      description: 'No author specified',
+      date: '2025-06-01',
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.author).toBeUndefined();
+    }
+  });
+
+  it('rejects an author field that is not a string', () => {
+    const result = blogSchema.safeParse({
+      title: 'Bad Author',
+      description: 'Author is a number',
+      date: '2025-06-01',
+      author: 42,
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts a post with an explicit empty tags array', () => {
+    const result = blogSchema.safeParse({
+      title: 'No Tags Post',
+      description: 'Post with explicitly empty tags',
+      date: '2025-06-01',
+      tags: [],
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.tags).toEqual([]);
+    }
+  });
+
+  it('accepts a post with multiple tags', () => {
+    const result = blogSchema.safeParse({
+      title: 'Tagged Post',
+      description: 'Post with several tags',
+      date: '2025-06-01',
+      tags: ['astro', 'typescript', 'tailwind'],
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.tags).toHaveLength(3);
+    }
+  });
+
+  it('rejects tags that contain non-string values', () => {
+    const result = blogSchema.safeParse({
+      title: 'Bad Tags Post',
+      description: 'Tags contain a number',
+      date: '2025-06-01',
+      tags: ['valid-tag', 123],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts draft: false explicitly', () => {
+    const result = blogSchema.safeParse({
+      title: 'Published Post',
+      description: 'Explicitly not a draft',
+      date: '2025-06-01',
+      draft: false,
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.draft).toBe(false);
+    }
+  });
+});
