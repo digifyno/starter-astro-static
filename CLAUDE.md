@@ -76,8 +76,12 @@ npm test          # Run unit tests (vitest)
   - `src/tests/rss.test.ts` — tests the RSS feed endpoint
   - `src/tests/robots.test.ts` — tests the robots.txt endpoint
   - `src/tests/jsonld.test.ts` — tests JSON-LD BlogPosting and BreadcrumbList schema structure for blog post pages
-  - `src/tests/og-image.test.ts` — tests OG image `getStaticPaths` draft filtering (excludes drafts in production, includes in dev)
   - `src/tests/seo.test.ts` — tests SEO component canonical URL normalisation, OG image URL resolution, og:type mapping, and default prop values
+  - `src/tests/tags.test.ts` — tests draft filtering, tag filtering, tag count building, tag sorting, and reading-time display for tag pages
+  - `src/tests/tag-chip-focus-rings.test.ts` — tests that tag chips on all pages carry `focus-visible:outline` styles for WCAG keyboard focus
+  - `src/tests/blog-listing.test.ts` — tests blog listing draft filter, date sort (newest first), reading-time fallback, post/tag link hrefs, and post card data completeness
+  - `src/tests/tags-index.test.ts` — tests tags index draft filter, tag count building (flatMap+reduce), tag sort (count desc then alpha), tag href generation, and the full pipeline
+  - `src/tests/404.test.ts` — tests 404 page source structure: BaseLayout usage, heading, home link, and explanatory copy
 
 ### Running tests
 
