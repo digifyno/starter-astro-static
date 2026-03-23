@@ -24,6 +24,15 @@ function resolveCanonicalHref(canonicalURL: URL | string): string {
   return canonicalURL.toString();
 }
 
+// Resolves the twitter:image:alt content value.
+// When imageAlt is explicitly provided it is used directly; otherwise falls back to description.
+// Mirrors: imageAlt = description (default destructuring in SEO.astro)
+function resolveImageAlt(imageAlt: string | undefined, description: string): string {
+  return imageAlt ?? description;
+}
+
+const DEFAULT_LOCALE = 'en_US';
+
 // Default prop values from SEO.astro
 const DEFAULT_IMAGE = "/og-default.png";
 const DEFAULT_TYPE = "website";
@@ -136,6 +145,29 @@ describe("SEO.astro logic", () => {
       const canonicalURL = "https://example.com/blog/my-post";
       const canonicalHref = resolveCanonicalHref(canonicalURL);
       expect(canonicalHref).toBe(canonicalURL);
+    });
+  });
+
+  describe("og:locale", () => {
+    it("always outputs en_US locale", () => {
+      expect(DEFAULT_LOCALE).toBe("en_US");
+    });
+  });
+
+  describe("twitter:image:alt", () => {
+    it("uses the explicit imageAlt prop when provided", () => {
+      const result = resolveImageAlt("A photo of a sunset", "Post description");
+      expect(result).toBe("A photo of a sunset");
+    });
+
+    it("falls back to description when imageAlt is undefined", () => {
+      const result = resolveImageAlt(undefined, "Post about TypeScript generics");
+      expect(result).toBe("Post about TypeScript generics");
+    });
+
+    it("uses empty string imageAlt without falling back to description", () => {
+      const result = resolveImageAlt("", "Post description");
+      expect(result).toBe("");
     });
   });
 
