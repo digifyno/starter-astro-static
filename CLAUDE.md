@@ -43,6 +43,9 @@ src/
   tests/
     rss.test.ts         # Unit tests for RSS feed generation
     robots.test.ts      # Unit tests for robots.txt generation
+    jsonld.test.ts      # Unit tests for JSON-LD BlogPosting and BreadcrumbList schema structure for blog post pages
+    og-image.test.ts    # Unit tests for OG image getStaticPaths draft filtering
+    seo.test.ts         # Unit tests for SEO component canonical URL normalisation, OG image URL resolution, og:type mapping, and default prop values
 public/
   favicon.svg           # Site favicon
   og-default.png        # Default OG image (fallback for non-post pages)
