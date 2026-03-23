@@ -74,6 +74,7 @@ npm test          # Run unit tests (vitest)
   - `src/tests/robots.test.ts` — tests the robots.txt endpoint
   - `src/tests/jsonld.test.ts` — tests JSON-LD BlogPosting and BreadcrumbList schema structure for blog post pages
   - `src/tests/og-image.test.ts` — tests OG image `getStaticPaths` draft filtering (excludes drafts in production, includes in dev)
+  - `src/tests/seo.test.ts` — tests SEO component canonical URL normalisation, OG image URL resolution, og:type mapping, and default prop values
 
 ### Running tests
 
