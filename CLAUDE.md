@@ -108,6 +108,17 @@ draft: false                 # optional — hides from production builds
 
 The schema is defined in `src/content.config.ts` using Zod validation.
 
+### Image pipeline
+
+When a blog post includes a cover image, the following data flow applies:
+
+- **With `image` set**: `src/pages/blog/[id].astro` resolves the frontmatter `image` value as a co-located Astro asset and passes the resolved URL to `SEO.astro` via its `image` prop. `SEO.astro` uses this URL for the `og:image` meta tag, and the post page renders the image as the post header.
+- **Without `image`**: `SEO.astro` falls back to `public/og-default.png` for the `og:image` meta tag on all pages that do not supply a post-specific image.
+
+**Co-located image constraint**: Images referenced in frontmatter must be placed **in the same directory as the `.md` file** (i.e., `src/content/blog/`) and referenced with a relative `./` path (e.g., `image: ./cover.png`). Images stored in `public/` cannot be used as co-located frontmatter images — Astro's asset pipeline requires co-located assets to be importable relative to the content file.
+
+**`imageAlt` requirement**: `imageAlt` should be provided whenever `image` is set. Omitting it will render the cover `<img>` with an empty `alt=""` attribute (treated as decorative by screen readers).
+
 ## Adding New Pages
 
 Create `.astro` files in `src/pages/`. File-based routing:
