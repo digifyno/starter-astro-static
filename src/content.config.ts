@@ -10,6 +10,7 @@ const blog = defineCollection({
     date: z.coerce.date(),
     tags: z.array(z.string()).default([]),
     image: image().optional(),         // co-located image for display and OG; use a relative path like ./cover.png
+    imageAlt: z.string().optional(),   // alt text for the cover image (recommended when image is set)
     draft: z.boolean().default(false), // exclude from production builds
     author: z.string().optional(),     // used in JSON-LD BlogPosting schema
   }),

@@ -83,7 +83,7 @@ const breadcrumbSchema = {
     {post.data.image && (
       <Image
         src={post.data.image}
-        alt={post.data.title}
+        alt={post.data.imageAlt ?? ''}
         width={1200}
         height={630}
         loading="eager"

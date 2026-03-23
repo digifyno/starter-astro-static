@@ -101,6 +101,7 @@ date: 2025-01-15
 tags: ["tag1", "tag2"]
 author: "Author Name"        # optional — used in JSON-LD
 image: ./cover.png           # optional — co-located image for OG and post header
+imageAlt: "Description of the cover image"  # optional — recommended when image is set
 draft: false                 # optional — hides from production builds
 ---
 ```
