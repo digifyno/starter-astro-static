@@ -41,11 +41,15 @@ src/
     format-date.ts      # Shared date formatting utility (used by blog listing, tag pages, post pages)
     date.test.ts        # Unit tests for date formatting utility
   tests/
-    rss.test.ts         # Unit tests for RSS feed generation
-    robots.test.ts      # Unit tests for robots.txt generation
-    jsonld.test.ts      # Unit tests for JSON-LD BlogPosting and BreadcrumbList schema structure for blog post pages
-    og-image.test.ts    # Unit tests for OG image getStaticPaths draft filtering
-    seo.test.ts         # Unit tests for SEO component canonical URL normalisation, OG image URL resolution, og:type mapping, and default prop values
+    rss.test.ts                   # Unit tests for RSS feed generation
+    robots.test.ts                # Unit tests for robots.txt generation
+    jsonld.test.ts                # Unit tests for JSON-LD BlogPosting and BreadcrumbList schema structure for blog post pages
+    seo.test.ts                   # Unit tests for SEO component canonical URL normalisation, OG image URL resolution, og:type mapping, and default prop values
+    tags.test.ts                  # Integration tests: draft filtering, tag filtering, tag count building, tag sorting, reading-time display for tag pages
+    tag-chip-focus-rings.test.ts  # Integration tests: tag chips carry focus-visible:outline styles for WCAG keyboard focus
+    blog-listing.test.ts          # Integration tests: blog listing draft filter, date sort (newest first), reading-time fallback, post/tag link hrefs, post card data completeness
+    tags-index.test.ts            # Integration tests: tags index draft filter, tag count building, tag sort (count desc then alpha), tag href generation
+    404.test.ts                   # Integration tests: 404 page structure, BaseLayout usage, heading, home link, explanatory copy
 public/
   favicon.svg           # Site favicon
   og-default.png        # Default OG image (fallback for non-post pages)
