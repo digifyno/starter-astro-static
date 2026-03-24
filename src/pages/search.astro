@@ -15,6 +15,11 @@ const isDev = import.meta.env.DEV;
       </div>
     ) : (
       <>
+<noscript>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Full-text search requires JavaScript. Please enable JavaScript in your browser to use this feature.
+          </p>
+        </noscript>
         <label for="pagefind-search-input" class="block text-sm font-medium mb-2">Search posts</label>
         <div id="search-loading" class="text-sm text-gray-500 py-4">Loading search…</div>
         <div id="search" class="hidden"></div>
@@ -36,13 +41,18 @@ const isDev = import.meta.env.DEV;
     // Astro's SHA-256 CSP feature, so the init script must be an Astro-processed script
     // (no is:inline). The injected <script src="/pagefind/pagefind-ui.js"> is same-origin
     // and allowed by 'self' in script-src.
-    await new Promise<void>((resolve, reject) => {
-      const s = document.createElement('script');
-      s.src = '/pagefind/pagefind-ui.js';
-      s.onload = () => resolve();
-      s.onerror = () => reject(new Error('Failed to load /pagefind/pagefind-ui.js'));
-      document.head.appendChild(s);
-    });
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = '/pagefind/pagefind-ui.js';
+        s.onload = () => resolve();
+        s.onerror = () => reject(new Error('Failed to load /pagefind/pagefind-ui.js'));
+        document.head.appendChild(s);
+      });
+    } catch (_err) {
+      const loadingEl = document.getElementById('search-loading');
+      if (loadingEl) loadingEl.textContent = 'Search failed to load. Please try refreshing the page.';
+    }
 
     // @ts-ignore: PagefindUI is set as a global by pagefind-ui.js
     new window.PagefindUI({ element: '#search', showImages: false });
