@@ -13,7 +13,7 @@ src/
   components/
     SEO.astro          # Open Graph, Twitter Card, and canonical meta (added to all pages)
   plugins/
-    remark-reading-time.mjs  # Custom remark plugin: injects minutesRead (string, e.g. "5 min read") into remarkPluginFrontmatter — access via (await render(post)).remarkPluginFrontmatter.minutesRead
+    remark-reading-time.mjs  # Custom remark plugin: injects minutesRead (string, e.g. "5 min read") into remarkPluginFrontmatter — access via (await render(post)).remarkPluginFrontmatter.minutesRead. Imports `reading-time` and `unist-util-visit` directly (both declared as devDependencies); the `remark-reading-time` npm package is NOT used.
     remark-reading-time.test.mjs  # Unit tests for the reading-time remark plugin (co-located, .mjs to match plugin format)
   content.config.ts     # Content collection schemas (blog)
   content.schema.test.ts  # Unit tests for content collection schema (Zod validation)

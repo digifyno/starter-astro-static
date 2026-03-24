@@ -16,7 +16,6 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^6.0.4",
-    "remark-reading-time": "^2.1.0",
     "satori": "^0.25.0",
     "tailwindcss": "^4.0.17"
   },
@@ -26,7 +25,9 @@
     "@vitest/coverage-v8": "^4.1.0",
     "inter-font": "^3.19.0",
     "pagefind": "^1.4.0",
+    "reading-time": "^1.5.0",
     "typescript": "^5.8.2",
+    "unist-util-visit": "^5.1.0",
     "vitest": "^4.1.0"
   }
 }
