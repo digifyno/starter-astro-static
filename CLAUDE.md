@@ -50,6 +50,8 @@ src/
     blog-listing.test.ts          # Integration tests: blog listing draft filter, date sort (newest first), reading-time fallback, post/tag link hrefs, post card data completeness
     tags-index.test.ts            # Integration tests: tags index draft filter, tag count building, tag sort (count desc then alpha), tag href generation
     404.test.ts                   # Integration tests: 404 page structure, BaseLayout usage, heading, home link, explanatory copy
+    index.test.ts                 # Integration tests: homepage latest-posts draft exclusion (prod filter), newest-first date sort, slice to 3
+    search.test.ts                # Source-level structural tests: Pagefind script/CSS references, noscript fallback, ARIA live region (aria-live="polite"), dev-mode notice
 public/
   favicon.svg           # Site favicon
   og-default.png        # Default OG image (fallback for non-post pages)
@@ -86,6 +88,8 @@ npm test          # Run unit tests (vitest)
   - `src/tests/blog-listing.test.ts` — tests blog listing draft filter, date sort (newest first), reading-time fallback, post/tag link hrefs, and post card data completeness
   - `src/tests/tags-index.test.ts` — tests tags index draft filter, tag count building (flatMap+reduce), tag sort (count desc then alpha), tag href generation, and the full pipeline
   - `src/tests/404.test.ts` — tests 404 page source structure: BaseLayout usage, heading, home link, and explanatory copy
+  - `src/tests/index.test.ts` — tests homepage (index.astro) latest-posts draft exclusion, newest-first date sort, and slice-to-3 count
+  - `src/tests/search.test.ts` — source-level structural tests for search.astro: Pagefind script/CSS references, noscript fallback, ARIA live region (`aria-live="polite"`), and dev-mode notice
 
 ### Running tests
 
