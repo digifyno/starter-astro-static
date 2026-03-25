@@ -40,6 +40,7 @@ export default defineConfig({
         "default-src 'self'",
         "img-src 'self' data:",
         "font-src 'self'",
+        "worker-src 'self'",
       ],
       scriptDirective: {
         resources: ["'self'", "'wasm-unsafe-eval'"],
