@@ -246,3 +246,42 @@ describe('reading time (minutesRead) on tag page post entries', () => {
     }
   });
 });
+
+// ---------------------------------------------------------------------------
+// "Read more" link accessible name (WCAG 2.4.9 — Link Purpose: Link Only)
+// Verifies the aria-label pattern used in blog/tags/[tag].astro.
+// ---------------------------------------------------------------------------
+
+/** Build the aria-label for a "Read more" link. Mirrors: `Read more about ${post.data.title}` */
+function readMoreAriaLabel(post: BlogPost): string {
+  return `Read more about ${post.data.title}`;
+}
+
+describe('"Read more" link accessible name on tag pages (WCAG 2.4.9)', () => {
+  it('aria-label includes the post title', () => {
+    expect(readMoreAriaLabel(published1)).toContain(published1.data.title);
+    expect(readMoreAriaLabel(published2)).toContain(published2.data.title);
+  });
+
+  it('aria-label starts with "Read more about"', () => {
+    for (const post of [published1, published2]) {
+      expect(readMoreAriaLabel(post)).toMatch(/^Read more about /);
+    }
+  });
+
+  it('aria-label is unique across posts with different titles', () => {
+    const labels = [published1, published2].map(readMoreAriaLabel);
+    const unique = new Set(labels);
+    expect(unique.size).toBe(2);
+  });
+
+  it('aria-label for every published post on a tag page is non-empty and contains its title', () => {
+    const published = filterDrafts(allPosts, false);
+    const astroPosts = filterByTag(published, 'astro');
+    for (const post of astroPosts) {
+      const label = readMoreAriaLabel(post);
+      expect(label).toBeTruthy();
+      expect(label).toContain(post.data.title);
+    }
+  });
+});

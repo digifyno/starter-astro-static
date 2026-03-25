@@ -271,3 +271,42 @@ describe('post card data requirements', () => {
     }
   });
 });
+
+// ---------------------------------------------------------------------------
+// "Read more" link accessible name (WCAG 2.4.9 — Link Purpose: Link Only)
+// Verifies the aria-label pattern used in blog/index.astro.
+// ---------------------------------------------------------------------------
+
+/** Build the aria-label for a "Read more" link. Mirrors: `Read more about ${post.data.title}` */
+function readMoreAriaLabel(post: BlogPost): string {
+  return `Read more about ${post.data.title}`;
+}
+
+describe('"Read more" link accessible name (WCAG 2.4.9)', () => {
+  it('aria-label includes the post title', () => {
+    expect(readMoreAriaLabel(newest)).toContain(newest.data.title);
+    expect(readMoreAriaLabel(middle)).toContain(middle.data.title);
+    expect(readMoreAriaLabel(oldest)).toContain(oldest.data.title);
+  });
+
+  it('aria-label starts with "Read more about"', () => {
+    for (const post of [newest, middle, oldest]) {
+      expect(readMoreAriaLabel(post)).toMatch(/^Read more about /);
+    }
+  });
+
+  it('aria-label is unique across posts with different titles', () => {
+    const labels = [newest, middle, oldest].map(readMoreAriaLabel);
+    const unique = new Set(labels);
+    expect(unique.size).toBe(3);
+  });
+
+  it('aria-label for every published post is non-empty and contains its title', () => {
+    const published = filterBlogPosts(allPosts, false);
+    for (const post of published) {
+      const label = readMoreAriaLabel(post);
+      expect(label).toBeTruthy();
+      expect(label).toContain(post.data.title);
+    }
+  });
+});
