@@ -52,6 +52,7 @@ src/
     404.test.ts                   # Integration tests: 404 page structure, BaseLayout usage, heading, home link, explanatory copy
     index.test.ts                 # Integration tests: homepage latest-posts draft exclusion (prod filter), newest-first date sort, slice to 3
     search.test.ts                # Source-level structural tests: Pagefind script/CSS references, noscript fallback, ARIA live region (aria-live="polite"), dev-mode notice
+    base-layout.test.ts           # Source-level structural tests: skip navigation link (WCAG 2.4.1), nav completeness (Home, Blog, Tags, Search), focus-visible ring styles, dark mode support
 public/
   favicon.svg           # Site favicon
   og-default.png        # Default OG image (fallback for non-post pages)
