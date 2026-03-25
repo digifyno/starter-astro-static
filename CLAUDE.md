@@ -20,7 +20,7 @@ src/
   draft-filter.test.ts    # Unit tests for draft post filtering logic
   content/blog/         # Markdown blog posts (frontmatter: title, description, date, tags)
   layouts/
-    BaseLayout.astro    # Base HTML layout with nav (Home, Blog, Tags, Search), footer, dark mode support, skip navigation link for WCAG 2.4.1 compliance, and focus-visible ring styles on interactive elements
+    BaseLayout.astro    # Base HTML layout with nav (Home, Blog, Tags, Search), footer, dark mode support, skip navigation link for WCAG 2.4.1 compliance, focus-visible ring styles on interactive elements, and lang="en" on the html element for WCAG 3.1.1 compliance
   pages/
     index.astro         # Landing page (hero, features grid, latest posts)
     404.astro           # Custom 404 error page

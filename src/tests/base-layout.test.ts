@@ -23,4 +23,8 @@ describe('BaseLayout', () => {
   it('includes dark mode support', () => {
     expect(source).toMatch(/dark:/);
   });
+
+  it('BaseLayout includes lang attribute for WCAG 3.1.1', () => {
+    expect(source).toMatch(/lang=["']en["']/);
+  });
 });
