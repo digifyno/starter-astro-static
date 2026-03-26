@@ -54,6 +54,7 @@ src/
     search.test.ts                # Source-level structural tests: Pagefind script/CSS references, noscript fallback, ARIA live region (aria-live="polite"), dev-mode notice
     base-layout.test.ts           # Source-level structural tests: skip navigation link (WCAG 2.4.1), nav completeness (Home, Blog, Tags, Search), focus-visible ring styles, dark mode support
     post-routes.test.ts           # Source-level structural tests: [id].astro and og.png.ts exclude draft posts in getStaticPaths (prevents draft URL/OG image leakage in production)
+    post-page.test.ts              # Source-level structural tests: reading time display (minutesRead), tag chip links to /blog/tags/, JSON-LD BlogPosting + BreadcrumbList presence, and cover image alt text binding
 public/
   favicon.svg           # Site favicon
   og-default.png        # Default OG image (fallback for non-post pages)
@@ -93,6 +94,7 @@ npm test          # Run unit tests (vitest)
   - `src/tests/index.test.ts` — tests homepage (index.astro) latest-posts draft exclusion, newest-first date sort, and slice-to-3 count
   - `src/tests/search.test.ts` — source-level structural tests for search.astro: Pagefind script/CSS references, noscript fallback, ARIA live region (`aria-live="polite"`), and dev-mode notice
   - `src/tests/post-routes.test.ts` — source-level structural tests: `[id].astro` and `og.png.ts` both exclude draft posts in `getStaticPaths` (prevents draft URLs and OG image endpoints from being exposed in production)
+  - `src/tests/post-page.test.ts` — source-level structural tests for `[id].astro`: reading time display, tag chip links to `/blog/tags/`, JSON-LD BlogPosting + BreadcrumbList presence, and cover image alt text binding
 
 ### Running tests
 
