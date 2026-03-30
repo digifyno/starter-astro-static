@@ -29,7 +29,7 @@ src/
     search.astro        # Pagefind full-text search page (/search); requires production build (shows dev-mode notice in dev); ARIA live region for screen reader result announcements
     blog/
       index.astro       # Blog listing page
-      [id].astro        # Individual blog post with JSON-LD BlogPosting + BreadcrumbList schemas (dynamic route)
+      [id].astro        # Individual blog post with JSON-LD BlogPosting + BreadcrumbList schemas (dynamic route); passes Satori-generated og.png URL as image={ogImageUrl} to BaseLayout
       [id]/
         og.png.ts       # Per-post OG image generation via Satori + Resvg; draft posts excluded in production builds
       tags/
@@ -60,7 +60,7 @@ src/
 public/
   favicon.svg           # Site favicon
   og-default.png        # Default OG image (fallback for non-post pages)
-astro.config.mjs        # Astro config (static output, Tailwind vite plugin, Inter+FiraCode fonts via Astro 6 built-in Fonts API (fontProviders.fontsource()), sourcemaps disabled)
+astro.config.mjs        # Astro config (static output, Tailwind vite plugin, Inter+FiraCode fonts via Astro 6 Fonts API (fontProviders.fontsource() from astro/config; Font component from astro:assets), sourcemaps disabled)
 tsconfig.json           # TypeScript config (strict mode)
 vitest.config.ts        # Vitest configuration (includes src/**/*.test.ts and src/**/*.test.mjs; coverage via v8 provider; enforces coverage thresholds: statements 21%, branches 23%, functions 20%, lines 21%)
 ```
@@ -124,7 +124,7 @@ description: "Brief description"
 date: 2025-01-15
 tags: ["tag1", "tag2"]
 author: "Author Name"        # optional — used in JSON-LD
-image: ./cover.png           # optional — co-located image for OG and post header
+image: ./cover.png           # optional — co-located image rendered as visual post header (not used for og:image)
 imageAlt: "Description of the cover image"  # optional — recommended when image is set
 draft: false                 # optional — hides from production builds
 ---
@@ -136,8 +136,8 @@ The schema is defined in `src/content.config.ts` using Zod validation.
 
 When a blog post includes a cover image, the following data flow applies:
 
-- **With `image` set**: `src/pages/blog/[id].astro` resolves the frontmatter `image` value as a co-located Astro asset and passes the resolved URL to `SEO.astro` via its `image` prop. `SEO.astro` uses this URL for the `og:image` meta tag, and the post page renders the image as the post header.
-- **Without `image`**: `SEO.astro` falls back to `public/og-default.png` for the `og:image` meta tag on all pages that do not supply a post-specific image.
+- **With `image` set**: The post renders the cover image as a visual header via Astro's `<Image>` component. The `og:image` meta tag is NOT set from the frontmatter `image`; it always points to the Satori-generated `/blog/{id}/og.png`.
+- **Without `image`**: No visual header is rendered. The `og:image` meta tag still points to the per-post Satori OG image (`/blog/{id}/og.png`), not `public/og-default.png` (which is only the fallback for non-post pages).
 
 **Co-located image constraint**: Images referenced in frontmatter must be placed **in the same directory as the `.md` file** (i.e., `src/content/blog/`) and referenced with a relative `./` path (e.g., `image: ./cover.png`). Images stored in `public/` cannot be used as co-located frontmatter images — Astro's asset pipeline requires co-located assets to be importable relative to the content file.
 
