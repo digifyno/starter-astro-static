@@ -60,7 +60,7 @@ src/
 public/
   favicon.svg           # Site favicon
   og-default.png        # Default OG image (fallback for non-post pages)
-astro.config.mjs        # Astro config (static output, Tailwind vite plugin, Inter+FiraCode fonts via @astrojs/fonts (Astro 6 Fonts API), sourcemaps disabled)
+astro.config.mjs        # Astro config (static output, Tailwind vite plugin, Inter+FiraCode fonts via Astro 6 built-in Fonts API (fontProviders.fontsource()), sourcemaps disabled)
 tsconfig.json           # TypeScript config (strict mode)
 vitest.config.ts        # Vitest configuration (includes src/**/*.test.ts and src/**/*.test.mjs; coverage via v8 provider; enforces coverage thresholds: statements 21%, branches 23%, functions 20%, lines 21%)
 ```
@@ -186,7 +186,7 @@ Tailwind CSS 4 is configured via the `@tailwindcss/vite` plugin in `astro.config
 
 ## Content Security Policy
 
-CSP is configured in `astro.config.mjs` via Astro 6's `security.csp` option (not a `<meta>` tag). Current policy: `default-src 'self'` with `worker-src 'self'` (in `directives`) and `wasm-unsafe-eval` (in `scriptDirective`) — both required for Pagefind's Web Worker and WebAssembly search runtime.
+CSP is configured in `astro.config.mjs` via Astro 6's `security.csp` option (not a `<meta>` tag). Current policy: `default-src 'self'`, `img-src 'self' data:`, `font-src 'self'`, and `worker-src 'self'` (in `directives`), plus `wasm-unsafe-eval` (in `scriptDirective`) — the latter two required for Pagefind's Web Worker and WebAssembly search runtime.
 
 To extend the policy, edit the `security.csp` block in `astro.config.mjs`:
 
