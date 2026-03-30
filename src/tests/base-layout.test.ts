@@ -27,4 +27,30 @@ describe('BaseLayout', () => {
   it('BaseLayout includes lang attribute for WCAG 3.1.1', () => {
     expect(source).toMatch(/lang=["']en["']/);
   });
+
+  describe('article meta tags', () => {
+    it('conditionally renders article:published_time meta tag', () => {
+      // BaseLayout.astro:45-47 — only rendered when type=article and articleMeta.publishedTime is set
+      expect(source).toContain('article:published_time');
+      expect(source).toContain('articleMeta?.publishedTime');
+    });
+
+    it('conditionally renders article:author meta tag', () => {
+      // BaseLayout.astro:48-50
+      expect(source).toContain('article:author');
+      expect(source).toContain('articleMeta?.author');
+    });
+
+    it('conditionally renders article:tag meta tags', () => {
+      // BaseLayout.astro:51-53 — one meta tag per tag
+      expect(source).toContain('article:tag');
+      expect(source).toContain('articleMeta?.tags');
+    });
+
+    it('gates article meta on type === article check', () => {
+      // All three blocks must be guarded by type === article to avoid polluting non-article pages
+      const articleBlocks = (source.match(/type === .article./g) || []).length;
+      expect(articleBlocks).toBeGreaterThanOrEqual(3);
+    });
+  });
 });
