@@ -10,6 +10,7 @@ const blogSchema = z.object({
   tags: z.array(z.string()).default([]),
   draft: z.boolean().default(false),
   author: z.string().optional(),
+  imageAlt: z.string().optional(),
 });
 
 describe('blog content schema', () => {
@@ -165,6 +166,41 @@ describe('blog content schema — optional fields', () => {
       description: 'Tags contain a number',
       date: '2025-06-01',
       tags: ['valid-tag', 123],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts a post with an imageAlt string', () => {
+    const result = blogSchema.safeParse({
+      title: 'Post With Alt',
+      description: 'Has image alt',
+      date: '2025-06-01',
+      imageAlt: 'A scenic mountain view',
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.imageAlt).toBe('A scenic mountain view');
+    }
+  });
+
+  it('accepts a post without imageAlt (imageAlt is optional)', () => {
+    const result = blogSchema.safeParse({
+      title: 'No Alt Post',
+      description: 'No image alt text',
+      date: '2025-06-01',
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.imageAlt).toBeUndefined();
+    }
+  });
+
+  it('rejects imageAlt that is not a string', () => {
+    const result = blogSchema.safeParse({
+      title: 'Bad Alt Post',
+      description: 'Alt is a number',
+      date: '2025-06-01',
+      imageAlt: 42,
     });
     expect(result.success).toBe(false);
   });
