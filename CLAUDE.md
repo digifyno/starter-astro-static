@@ -16,7 +16,7 @@ src/
     remark-reading-time.mjs  # Custom remark plugin: injects minutesRead (string, e.g. "5 min read") into remarkPluginFrontmatter — access via (await render(post)).remarkPluginFrontmatter.minutesRead. Imports `reading-time` and `unist-util-visit` directly (both declared as devDependencies); the `remark-reading-time` npm package is NOT used.
     remark-reading-time.test.mjs  # Unit tests for the reading-time remark plugin (co-located, .mjs to match plugin format)
   content.config.ts     # Content collection schemas (blog)
-  content.schema.test.ts  # Unit tests for content collection schema (Zod validation)
+  content.schema.test.ts  # Unit tests for content collection schema (Zod validation); covers required fields, optional fields (author, image, imageAlt), defaults, and type rejection
   draft-filter.test.ts    # Unit tests for draft post filtering logic
   content/blog/         # Markdown blog posts (frontmatter: title, description, date, tags)
   layouts/
@@ -80,7 +80,7 @@ npm test          # Run unit tests (vitest)
 ### File placement convention
 - **Unit tests** (utilities, schemas, pure functions): co-located `.test.ts` (or `.test.mjs` for ESM-only modules) next to the file under test.
   - `src/utils/date.test.ts` — tests `format-date.ts`
-  - `src/content.schema.test.ts` — tests the content collection schema
+  - `src/content.schema.test.ts` — tests the content collection schema (required fields, optional fields including `image` and `imageAlt`, defaults, type rejection)
   - `src/draft-filter.test.ts` — tests draft filtering logic
   - `src/plugins/remark-reading-time.test.mjs` — tests the reading-time remark plugin
 - **Integration tests** (routes, endpoints, multi-module flows): `src/tests/`
