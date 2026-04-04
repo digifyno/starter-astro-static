@@ -44,7 +44,7 @@ src/
     rss.test.ts                   # Unit tests for RSS feed generation
     robots.test.ts                # Unit tests for robots.txt generation
     jsonld.test.ts                # Unit tests for JSON-LD BlogPosting and BreadcrumbList schema structure for blog post pages
-    seo.test.ts                   # Unit tests for SEO component canonical URL normalisation, OG image URL resolution, og:type mapping, and default prop values
+    seo.test.ts                   # Unit tests for SEO component: canonical URL normalisation, OG/twitter image URL resolution, og:type mapping, og:locale, twitter:image:alt fallback (resolveImageAlt), OG and Twitter tag content values, and default prop values
     tags.test.ts                  # Integration tests: draft filtering, tag filtering, tag count building, tag sorting, reading-time display for tag pages
     tag-chip-focus-rings.test.ts  # Integration tests: tag chips carry focus-visible:outline styles for WCAG keyboard focus
     blog-listing.test.ts          # Integration tests: blog listing draft filter, date sort (newest first), reading-time fallback, post/tag link hrefs, post card data completeness
@@ -52,7 +52,7 @@ src/
     404.test.ts                   # Integration tests: 404 page structure, BaseLayout usage, heading, home link, explanatory copy
     index.test.ts                 # Integration tests: homepage latest-posts draft exclusion (prod filter), newest-first date sort, slice to 3
     search.test.ts                # Source-level structural tests: Pagefind script/CSS references, noscript fallback, ARIA live region (aria-live="polite"), dev-mode notice
-    base-layout.test.ts           # Source-level structural tests: skip navigation link (WCAG 2.4.1), nav completeness (Home, Blog, Tags, Search), focus-visible ring styles, dark mode support
+    base-layout.test.ts           # Source-level structural tests: skip navigation link (WCAG 2.4.1), nav completeness (Home, Blog, Tags, Search), focus-visible ring styles, dark mode support, lang attribute (WCAG 3.1.1), and conditional article meta tags (article:published_time, article:author, article:tag)
     post-routes.test.ts           # Source-level structural tests: [id].astro and og.png.ts exclude draft posts in getStaticPaths (prevents draft URL/OG image leakage in production)
     post-page.test.ts              # Source-level structural tests: reading time display (minutesRead), tag chip links to /blog/tags/, JSON-LD BlogPosting + BreadcrumbList presence, and cover image alt text binding
     astro-config.test.ts          # Source-level structural tests: CSP directives (default-src, img-src, font-src, worker-src), wasm-unsafe-eval for Pagefind WebAssembly, SHA-256 algorithm, sourcemap disabled
@@ -87,7 +87,7 @@ npm test          # Run unit tests (vitest)
   - `src/tests/rss.test.ts` — tests the RSS feed endpoint
   - `src/tests/robots.test.ts` — tests the robots.txt endpoint
   - `src/tests/jsonld.test.ts` — tests JSON-LD BlogPosting and BreadcrumbList schema structure for blog post pages
-  - `src/tests/seo.test.ts` — tests SEO component canonical URL normalisation, OG image URL resolution, og:type mapping, and default prop values
+  - `src/tests/seo.test.ts` — tests SEO component canonical URL normalisation, OG/twitter image URL resolution, og:type mapping, og:locale, twitter:image:alt fallback (resolveImageAlt), OG and Twitter tag content values, and default prop values
   - `src/tests/tags.test.ts` — tests draft filtering, tag filtering, tag count building, tag sorting, and reading-time display for tag pages
   - `src/tests/tag-chip-focus-rings.test.ts` — tests that tag chips on all pages carry `focus-visible:outline` styles for WCAG keyboard focus
   - `src/tests/blog-listing.test.ts` — tests blog listing draft filter, date sort (newest first), reading-time fallback, post/tag link hrefs, and post card data completeness
@@ -95,6 +95,7 @@ npm test          # Run unit tests (vitest)
   - `src/tests/404.test.ts` — tests 404 page source structure: BaseLayout usage, heading, home link, and explanatory copy
   - `src/tests/index.test.ts` — tests homepage (index.astro) latest-posts draft exclusion, newest-first date sort, and slice-to-3 count
   - `src/tests/search.test.ts` — source-level structural tests for search.astro: Pagefind script/CSS references, noscript fallback, ARIA live region (`aria-live="polite"`), and dev-mode notice
+  - `src/tests/base-layout.test.ts` — source-level structural tests for BaseLayout.astro: skip navigation link (WCAG 2.4.1), nav completeness (Home, Blog, Tags, Search), focus-visible ring styles, dark mode support, lang attribute (WCAG 3.1.1), and conditional article meta tags (article:published_time, article:author, article:tag, type=article guard)
   - `src/tests/post-routes.test.ts` — source-level structural tests: `[id].astro` and `og.png.ts` both exclude draft posts in `getStaticPaths` (prevents draft URLs and OG image endpoints from being exposed in production)
   - `src/tests/post-page.test.ts` — source-level structural tests for `[id].astro`: reading time display, tag chip links to `/blog/tags/`, JSON-LD BlogPosting + BreadcrumbList presence, and cover image alt text binding
   - `src/tests/astro-config.test.ts` — source-level structural tests for `astro.config.mjs`: CSP directives (`default-src`, `img-src`, `font-src`, `worker-src`), `wasm-unsafe-eval` for Pagefind WebAssembly, SHA-256 algorithm, and sourcemap disabled
