@@ -20,7 +20,7 @@ src/
   draft-filter.test.ts    # Unit tests for draft post filtering logic
   content/blog/         # Markdown blog posts (frontmatter: title, description, date, tags)
   layouts/
-    BaseLayout.astro    # Base HTML layout with nav (Home, Blog, Tags, Search), footer, dark mode support, skip navigation link for WCAG 2.4.1 compliance, focus-visible ring styles on interactive elements, and lang="en" on the html element for WCAG 3.1.1 compliance
+    BaseLayout.astro    # Base HTML layout with nav (Home, Blog, Tags, Search), footer, dark mode support, skip navigation link for WCAG 2.4.1 compliance, focus-visible ring styles on interactive elements, and lang="en" on the html element for WCAG 3.1.1 compliance; accepts imageAlt? prop and forwards it to SEO component
   pages/
     index.astro         # Landing page (hero, features grid, latest posts)
     404.astro           # Custom 404 error page
@@ -52,7 +52,7 @@ src/
     404.test.ts                   # Integration tests: 404 page structure, BaseLayout usage, heading, home link, explanatory copy
     index.test.ts                 # Integration tests: homepage latest-posts draft exclusion (prod filter), newest-first date sort, slice to 3
     search.test.ts                # Source-level structural tests: Pagefind script/CSS references, noscript fallback, ARIA live region (aria-live="polite"), dev-mode notice
-    base-layout.test.ts           # Source-level structural tests: skip navigation link (WCAG 2.4.1), nav completeness (Home, Blog, Tags, Search), focus-visible ring styles, dark mode support, lang attribute (WCAG 3.1.1), and conditional article meta tags (article:published_time, article:author, article:tag, type=article guard)
+    base-layout.test.ts           # Source-level structural tests: skip navigation link (WCAG 2.4.1), nav completeness (Home, Blog, Tags, Search), focus-visible ring styles, dark mode support, lang attribute (WCAG 3.1.1), conditional article meta tags (article:published_time, article:author, article:tag, type=article guard), and imageAlt prop forwarding to SEO component
     post-routes.test.ts           # Source-level structural tests: [id].astro and og.png.ts exclude draft posts in getStaticPaths (prevents draft URL/OG image leakage in production)
     post-page.test.ts              # Source-level structural tests: reading time display (minutesRead), tag chip links to /blog/tags/, JSON-LD BlogPosting + BreadcrumbList presence, and cover image alt text binding
     astro-config.test.ts          # Source-level structural tests: CSP directives (default-src, img-src, font-src, worker-src), wasm-unsafe-eval for Pagefind WebAssembly, SHA-256 algorithm, sourcemap disabled
@@ -95,7 +95,7 @@ npm test          # Run unit tests (vitest)
   - `src/tests/404.test.ts` — tests 404 page source structure: BaseLayout usage, heading, home link, and explanatory copy
   - `src/tests/index.test.ts` — tests homepage (index.astro) latest-posts draft exclusion, newest-first date sort, and slice-to-3 count
   - `src/tests/search.test.ts` — source-level structural tests for search.astro: Pagefind script/CSS references, noscript fallback, ARIA live region (`aria-live="polite"`), and dev-mode notice
-  - `src/tests/base-layout.test.ts` — source-level structural tests for BaseLayout.astro: skip navigation link (WCAG 2.4.1), nav completeness (Home, Blog, Tags, Search), focus-visible ring styles, dark mode support, lang attribute (WCAG 3.1.1), and conditional article meta tags (article:published_time, article:author, article:tag, type=article guard)
+  - `src/tests/base-layout.test.ts` — source-level structural tests for BaseLayout.astro: skip navigation link (WCAG 2.4.1), nav completeness (Home, Blog, Tags, Search), focus-visible ring styles, dark mode support, lang attribute (WCAG 3.1.1), conditional article meta tags (article:published_time, article:author, article:tag, type=article guard), and imageAlt prop forwarding to SEO component
   - `src/tests/post-routes.test.ts` — source-level structural tests: `[id].astro` and `og.png.ts` both exclude draft posts in `getStaticPaths` (prevents draft URLs and OG image endpoints from being exposed in production)
   - `src/tests/post-page.test.ts` — source-level structural tests for `[id].astro`: reading time display, tag chip links to `/blog/tags/`, JSON-LD BlogPosting + BreadcrumbList presence, and cover image alt text binding
   - `src/tests/astro-config.test.ts` — source-level structural tests for `astro.config.mjs`: CSP directives (`default-src`, `img-src`, `font-src`, `worker-src`), `wasm-unsafe-eval` for Pagefind WebAssembly, SHA-256 algorithm, and sourcemap disabled
