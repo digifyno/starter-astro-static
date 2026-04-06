@@ -28,6 +28,16 @@ describe('BaseLayout', () => {
     expect(source).toMatch(/lang=["']en["']/);
   });
 
+  it('BaseLayout Props interface includes imageAlt', () => {
+    expect(source).toContain('imageAlt');
+  });
+
+  it('forwards imageAlt to the SEO component', () => {
+    // The <SEO> call must include imageAlt={imageAlt} to allow callers to set
+    // custom twitter:image:alt — without it the prop is silently ignored.
+    expect(source).toMatch(/imageAlt=\{imageAlt\}/);
+  });
+
   describe('article meta tags', () => {
     it('conditionally renders article:published_time meta tag', () => {
       // BaseLayout.astro:45-47 — only rendered when type=article and articleMeta.publishedTime is set

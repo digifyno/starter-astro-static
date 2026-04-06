@@ -7,6 +7,7 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  imageAlt?: string;
   type?: 'website' | 'article';
   articleMeta?: {
     publishedTime?: string; // ISO 8601
@@ -19,6 +20,7 @@ const {
   title,
   description = 'A content-heavy static site built with Astro and Tailwind CSS',
   image,
+  imageAlt,
   type = 'website',
   articleMeta,
 } = Astro.props;
@@ -40,6 +42,7 @@ const currentPath = Astro.url.pathname;
       description={description}
       canonicalURL={canonicalURL}
       image={image}
+      imageAlt={imageAlt}
       type={type}
     />
     {type === 'article' && articleMeta?.publishedTime && (
