@@ -111,7 +111,17 @@ describe('[id].astro source structure', () => {
   });
 
   // -------------------------------------------------------------------------
-  // 5. Back-to-blog navigation
+  // 5. imageAlt forwarding to BaseLayout
+  // -------------------------------------------------------------------------
+
+  it('forwards post.data.imageAlt to BaseLayout for twitter:image:alt', () => {
+    // Without this, twitter:image:alt silently uses description instead of the
+    // author-provided image alt text — even when imageAlt is set in frontmatter.
+    expect(pageSource).toMatch(/imageAlt=\{post\.data\.imageAlt\}/);
+  });
+
+  // -------------------------------------------------------------------------
+  // 6. Back-to-blog navigation
   // -------------------------------------------------------------------------
 
   it('contains a back-to-blog link pointing to /blog', () => {
