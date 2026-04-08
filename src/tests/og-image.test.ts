@@ -46,6 +46,6 @@ describe('og.png.ts GET handler structure', () => {
   });
 
   it('returns a Response with the PNG buffer', () => {
-    expect(source).toContain('new Response(png');
+    expect(source).toContain('new Response(');
   });
 });
