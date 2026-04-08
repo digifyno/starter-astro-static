@@ -54,7 +54,7 @@ src/
     search.test.ts                # Source-level structural tests: Pagefind script/CSS references, noscript fallback, ARIA live region (aria-live="polite"), dev-mode notice
     base-layout.test.ts           # Source-level structural tests: skip navigation link (WCAG 2.4.1), nav completeness (Home, Blog, Tags, Search), focus-visible ring styles, dark mode support, lang attribute (WCAG 3.1.1), conditional article meta tags (article:published_time, article:author, article:tag, type=article guard), and imageAlt prop forwarding to SEO component
     post-routes.test.ts           # Source-level structural tests: [id].astro and og.png.ts exclude draft posts in getStaticPaths (prevents draft URL/OG image leakage in production)
-    post-page.test.ts              # Source-level structural tests: reading time display (minutesRead), tag chip links to /blog/tags/, JSON-LD BlogPosting + BreadcrumbList presence, and cover image alt text binding
+    post-page.test.ts              # Source-level structural tests: reading time display (minutesRead), tag chip links to /blog/tags/, JSON-LD BlogPosting + BreadcrumbList presence, cover image alt text binding, imageAlt forwarding to BaseLayout (twitter:image:alt), and back-to-blog navigation
     astro-config.test.ts          # Source-level structural tests: CSP directives (default-src, img-src, font-src, worker-src), wasm-unsafe-eval for Pagefind WebAssembly, SHA-256 algorithm, sourcemap disabled
     og-image.test.ts              # Source-level structural tests: og.png.ts GET handler — Content-Type, Satori dimensions (1200x630), font loading, post title/date rendering, Resvg PNG output
 public/
@@ -97,7 +97,7 @@ npm test          # Run unit tests (vitest)
   - `src/tests/search.test.ts` — source-level structural tests for search.astro: Pagefind script/CSS references, noscript fallback, ARIA live region (`aria-live="polite"`), and dev-mode notice
   - `src/tests/base-layout.test.ts` — source-level structural tests for BaseLayout.astro: skip navigation link (WCAG 2.4.1), nav completeness (Home, Blog, Tags, Search), focus-visible ring styles, dark mode support, lang attribute (WCAG 3.1.1), conditional article meta tags (article:published_time, article:author, article:tag, type=article guard), and imageAlt prop forwarding to SEO component
   - `src/tests/post-routes.test.ts` — source-level structural tests: `[id].astro` and `og.png.ts` both exclude draft posts in `getStaticPaths` (prevents draft URLs and OG image endpoints from being exposed in production)
-  - `src/tests/post-page.test.ts` — source-level structural tests for `[id].astro`: reading time display, tag chip links to `/blog/tags/`, JSON-LD BlogPosting + BreadcrumbList presence, and cover image alt text binding
+  - `src/tests/post-page.test.ts` — source-level structural tests for `[id].astro`: reading time display, tag chip links to `/blog/tags/`, JSON-LD BlogPosting + BreadcrumbList presence, cover image alt text binding, imageAlt forwarding to BaseLayout for twitter:image:alt, and back-to-blog navigation
   - `src/tests/astro-config.test.ts` — source-level structural tests for `astro.config.mjs`: CSP directives (`default-src`, `img-src`, `font-src`, `worker-src`), `wasm-unsafe-eval` for Pagefind WebAssembly, SHA-256 algorithm, and sourcemap disabled
   - `src/tests/og-image.test.ts` — source-level structural tests for `og.png.ts` GET handler: Content-Type, Satori dimensions (1200x630), font loading, post title/date rendering, Resvg PNG output
 
