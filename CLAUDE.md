@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Content-heavy static site built with Astro 6, Tailwind CSS 4, and TypeScript. Outputs pre-rendered HTML with zero JavaScript by default.
+Content-heavy static site built with Astro 6, Tailwind CSS 4, and TypeScript 6. Outputs pre-rendered HTML with zero JavaScript by default.
 
 Includes `@astrojs/rss` (RSS feed at `/rss.xml`), `@astrojs/sitemap` (auto-generated sitemap), and `@tailwindcss/typography` (prose styling for blog posts).
 
