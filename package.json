@@ -28,6 +28,6 @@
     "reading-time": "^1.5.0",
     "typescript": "^5.9.3",
     "unist-util-visit": "^5.1.0",
-    "vitest": "^4.1.3"
+    "vitest": "^4.1.4"
   }
 }
