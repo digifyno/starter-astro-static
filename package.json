@@ -1,5 +1,6 @@
 {
   "name": "starter-astro-static",
+  "description": "RSI Starter: Astro 6 Static Site",
   "type": "module",
   "version": "1.0.0",
   "scripts": {
