@@ -63,6 +63,7 @@ public/
 astro.config.mjs        # Astro config (static output, Tailwind vite plugin, Inter+FiraCode fonts via Astro 6 Fonts API (fontProviders.fontsource() from astro/config; Font component from astro:assets), sourcemaps disabled)
 tsconfig.json           # TypeScript config (strict mode)
 vitest.config.ts        # Vitest configuration (includes src/**/*.test.ts and src/**/*.test.mjs; coverage via v8 provider; enforces coverage thresholds: statements 21%, branches 23%, functions 20%, lines 21%)
+.npmrc                  # npm config: include=dev (install devDependencies), git=false (suppress git in deploy envs)
 ```
 
 ## Commands
