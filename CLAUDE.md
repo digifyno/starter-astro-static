@@ -74,6 +74,15 @@ npm run preview   # Preview built site locally
 npm test          # Run unit tests (vitest)
 ```
 
+## npm Configuration
+
+An `.npmrc` file at the project root configures npm with two flags:
+
+- `include=dev` — ensures devDependencies are installed (required for vitest, TypeScript, etc.)
+- `git=false` — suppresses npm's git invocations, required in deploy environments where the `git` binary may not be available
+
+Do not remove these flags — `git=false` was added specifically to fix deployment failures in environments without git.
+
 
 ## Testing
 
