@@ -6,6 +6,10 @@ import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
 export default defineConfig({
   site: process.env.SITE_URL ?? 'https://example.com',
   output: 'static',
+  image: {
+    layout: 'constrained',
+    responsiveStyles: true,
+  },
   integrations: [sitemap()],
   markdown: {
     remarkPlugins: [remarkReadingTime],

@@ -86,10 +86,7 @@ const breadcrumbSchema = {
       <Image
         src={post.data.image}
         alt={post.data.imageAlt ?? ''}
-        width={1200}
-        height={630}
-        loading="eager"
-        fetchpriority="high"
+        priority
         class="w-full rounded-xl mb-8 object-cover"
       />
     )}
