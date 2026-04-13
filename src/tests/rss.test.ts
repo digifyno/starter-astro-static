@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { marked } from 'marked';
 
 // Draft filter predicate from rss.xml.ts: getCollection('blog', ({ data }) => !data.draft)
 const isDraftExcluded = ({ data }: { data: { draft?: boolean } }) => !data.draft;
@@ -8,11 +9,12 @@ const sortNewestFirst = (a: { data: { date: Date } }, b: { data: { date: Date } 
   b.data.date.valueOf() - a.data.date.valueOf();
 
 // Item mapper from rss.xml.ts
-const toRssItem = (post: { id: string; data: { title: string; description: string; date: Date } }) => ({
+const toRssItem = (post: { id: string; data: { title: string; description: string; date: Date }; body?: string }) => ({
   title: post.data.title,
   pubDate: post.data.date,
   description: post.data.description,
   link: `/blog/${post.id}/`,
+  content: marked.parse(post.body ?? ''),
 });
 
 describe('rss feed logic', () => {
@@ -84,6 +86,37 @@ describe('rss feed logic', () => {
       const date = new Date('2025-03-21');
       const item = toRssItem({ id: 'x', data: { title: 'X', description: 'D', date } });
       expect(item.pubDate.toISOString()).toBe(date.toISOString());
+    });
+
+    it('content field is populated from post body as HTML', () => {
+      const post = {
+        id: 'rich-post',
+        data: { title: 'Rich', description: 'D', date: new Date() },
+        body: '# Heading\n\nSome **bold** text.',
+      };
+      const item = toRssItem(post);
+      expect(item.content).toBeTruthy();
+      expect(item.content).toContain('<h1');
+      expect(item.content).toContain('<strong>bold</strong>');
+    });
+
+    it('content field is empty string when body is undefined', () => {
+      const post = {
+        id: 'no-body',
+        data: { title: 'No Body', description: 'D', date: new Date() },
+      };
+      const item = toRssItem(post);
+      expect(item.content).toBe('');
+    });
+
+    it('content field is empty string when body is empty', () => {
+      const post = {
+        id: 'empty-body',
+        data: { title: 'Empty', description: 'D', date: new Date() },
+        body: '',
+      };
+      const item = toRssItem(post);
+      expect(item.content).toBe('');
     });
   });
 });
