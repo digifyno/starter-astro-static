@@ -7,19 +7,23 @@ type PostData = {
   title: string;
   description: string;
   date: Date;
+  tags: string[];
   author?: string;
   draft?: boolean;
 };
 
-function buildBlogPostingSchema(postData: PostData, postUrl: string) {
+function buildBlogPostingSchema(postData: PostData, postUrl: string, ogImageUrl: string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: postData.title,
     description: postData.description,
     datePublished: postData.date.toISOString(),
+    dateModified: postData.date.toISOString(),
     author: { '@type': 'Person', name: postData.author ?? 'Site Author' },
     url: postUrl,
+    image: ogImageUrl,
+    keywords: postData.tags.join(', '),
   };
 }
 
@@ -39,11 +43,13 @@ function buildBreadcrumbSchema(siteBase: string, postTitle: string, postUrl: str
 const isPublished = ({ data }: { data: { draft?: boolean } }) => !data.draft;
 
 const SITE = 'https://example.com';
+const OG_IMAGE_URL = `${SITE}/blog/hello-world/og.png`;
 
 const publishedPost: PostData = {
   title: 'Hello World',
   description: 'An introductory post',
   date: new Date('2025-01-15T00:00:00.000Z'),
+  tags: ['astro', 'web'],
   author: 'Jane Doe',
 };
 
@@ -51,32 +57,33 @@ const minimalPost: PostData = {
   title: 'Minimal Post',
   description: 'A post with no optional fields',
   date: new Date('2024-06-01T00:00:00.000Z'),
+  tags: [],
 };
 
 describe('JSON-LD schemas for blog post pages', () => {
   describe('BlogPosting schema', () => {
     it('@context is https://schema.org', () => {
-      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`);
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
       expect(schema['@context']).toBe('https://schema.org');
     });
 
     it('@type is BlogPosting', () => {
-      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`);
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
       expect(schema['@type']).toBe('BlogPosting');
     });
 
     it('headline maps to post title frontmatter', () => {
-      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`);
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
       expect(schema.headline).toBe('Hello World');
     });
 
     it('description maps to post description frontmatter', () => {
-      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`);
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
       expect(schema.description).toBe('An introductory post');
     });
 
     it('datePublished is an ISO 8601 string of the post date', () => {
-      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`);
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
       expect(schema.datePublished).toBe('2025-01-15T00:00:00.000Z');
       // Must be parseable as a valid date
       expect(() => new Date(schema.datePublished)).not.toThrow();
@@ -84,29 +91,51 @@ describe('JSON-LD schemas for blog post pages', () => {
     });
 
     it('author.name maps to post author frontmatter when present', () => {
-      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`);
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
       expect(schema.author.name).toBe('Jane Doe');
     });
 
     it('author.name falls back to "Site Author" when author frontmatter is absent', () => {
-      const schema = buildBlogPostingSchema(minimalPost, `${SITE}/blog/minimal-post`);
+      const schema = buildBlogPostingSchema(minimalPost, `${SITE}/blog/minimal-post`, `${SITE}/blog/minimal-post/og.png`);
       expect(schema.author.name).toBe('Site Author');
     });
 
     it('author has @type Person', () => {
-      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`);
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
       expect(schema.author['@type']).toBe('Person');
     });
 
     it('url is an absolute URL containing the post path', () => {
       const postUrl = `${SITE}/blog/hello-world`;
-      const schema = buildBlogPostingSchema(publishedPost, postUrl);
+      const schema = buildBlogPostingSchema(publishedPost, postUrl, OG_IMAGE_URL);
       expect(schema.url).toMatch(/^https?:\/\//);
       expect(schema.url).toContain('/blog/hello-world');
     });
 
+    it('image is the absolute OG image URL', () => {
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
+      expect(schema.image).toBe(OG_IMAGE_URL);
+      expect(schema.image).toMatch(/^https?:\/\//);
+    });
+
+    it('keywords is a comma-separated string of post tags', () => {
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
+      expect(schema.keywords).toBe('astro, web');
+    });
+
+    it('keywords is an empty string when tags array is empty', () => {
+      const schema = buildBlogPostingSchema(minimalPost, `${SITE}/blog/minimal-post`, `${SITE}/blog/minimal-post/og.png`);
+      expect(schema.keywords).toBe('');
+    });
+
+    it('dateModified is an ISO 8601 string matching datePublished when no modifiedDate', () => {
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
+      expect(schema.dateModified).toBe('2025-01-15T00:00:00.000Z');
+      expect(new Date(schema.dateModified).toISOString()).toBe(schema.dateModified);
+    });
+
     it('schema is valid JSON (round-trips through JSON.parse)', () => {
-      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`);
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
       const parsed = JSON.parse(JSON.stringify(schema));
       expect(parsed['@type']).toBe('BlogPosting');
       expect(parsed.headline).toBe(publishedPost.title);
@@ -214,7 +243,7 @@ describe('JSON-LD schemas for blog post pages', () => {
 
     it('draft post data still builds a valid schema (schema itself is draft-agnostic)', () => {
       const draftPost: PostData = { ...minimalPost, draft: true };
-      const schema = buildBlogPostingSchema(draftPost, `${SITE}/blog/draft-post`);
+      const schema = buildBlogPostingSchema(draftPost, `${SITE}/blog/draft-post`, `${SITE}/blog/draft-post/og.png`);
       // The schema itself has no concept of draft; exclusion happens at getStaticPaths level
       expect(schema['@type']).toBe('BlogPosting');
       expect(schema.headline).toBe(draftPost.title);
