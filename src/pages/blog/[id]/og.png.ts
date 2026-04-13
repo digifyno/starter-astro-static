@@ -3,20 +3,12 @@ import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import { getCollection } from 'astro:content';
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { resolve, dirname } from 'node:path';
+import { resolve } from 'node:path';
 
 export const prerender = true;
 
-// Load Inter fonts from inter-font package (TTF format required by satori)
-function loadFont(weight: 'Light' | 'Regular' | 'Bold'): Buffer {
-  // Walk up from this file's location to find node_modules
-  const here = dirname(fileURLToPath(import.meta.url));
-  // In prerender context, cwd() is the project root
-  return readFileSync(
-    resolve(process.cwd(), `node_modules/inter-font/ttf/Inter-${weight}.ttf`)
-  );
-}
+const fontRegular = readFileSync(resolve(process.cwd(), 'node_modules/inter-font/ttf/Inter-Regular.ttf'));
+const fontBold    = readFileSync(resolve(process.cwd(), 'node_modules/inter-font/ttf/Inter-Bold.ttf'));
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const isDev = import.meta.env.DEV;
@@ -31,9 +23,6 @@ export const GET: APIRoute = async ({ params }) => {
 
   const siteUrl = import.meta.env.SITE_URL ?? 'https://example.com';
   const hostname = new URL(siteUrl).hostname;
-
-  const fontRegular = loadFont('Regular');
-  const fontBold = loadFont('Bold');
 
   const svg = await satori(
     {
