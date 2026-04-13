@@ -138,6 +138,7 @@ author: "Author Name"        # optional — used in JSON-LD
 image: ./cover.png           # optional — co-located image rendered as visual post header (not used for og:image)
 imageAlt: "Description of the cover image"  # optional — recommended when image is set
 draft: false                 # optional — hides from production builds
+updatedDate: 2025-06-01      # optional — date of last meaningful edit; used in JSON-LD dateModified
 ---
 ```
 

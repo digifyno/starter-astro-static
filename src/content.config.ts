@@ -13,6 +13,7 @@ const blog = defineCollection({
     imageAlt: z.string().optional(),   // alt text for the cover image (recommended when image is set)
     draft: z.boolean().default(false), // exclude from production builds
     author: z.string().optional(),     // used in JSON-LD BlogPosting schema
+    updatedDate: z.coerce.date().optional(), // when content was last meaningfully revised
   }),
 });
 

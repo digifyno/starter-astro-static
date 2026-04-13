@@ -12,6 +12,7 @@ const blogSchema = z.object({
   author: z.string().optional(),
   image: z.string().optional(),   // simplified — actual uses image() helper, but string() covers the optional contract
   imageAlt: z.string().optional(),
+  updatedDate: z.coerce.date().optional(),
 });
 
 describe('blog content schema', () => {
@@ -217,5 +218,41 @@ describe('blog content schema — optional fields', () => {
     if (result.success) {
       expect(result.data.draft).toBe(false);
     }
+  });
+
+  it('accepts a post without updatedDate (updatedDate is optional)', () => {
+    const result = blogSchema.safeParse({
+      title: 'No Updated Date',
+      description: 'No updatedDate field',
+      date: '2025-06-01',
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.updatedDate).toBeUndefined();
+    }
+  });
+
+  it('accepts updatedDate as a date string and coerces it to Date', () => {
+    const result = blogSchema.safeParse({
+      title: 'Updated Post',
+      description: 'Has an updated date',
+      date: '2025-01-01',
+      updatedDate: '2025-06-01',
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.updatedDate).toBeInstanceOf(Date);
+      expect(result.data.updatedDate?.toISOString().startsWith('2025-06-01')).toBe(true);
+    }
+  });
+
+  it('allows updatedDate before date (no ordering constraint)', () => {
+    const result = blogSchema.safeParse({
+      title: 'Backdated Revision',
+      description: 'updatedDate is before date',
+      date: '2025-06-01',
+      updatedDate: '2025-01-01',
+    });
+    expect(result.success).toBe(true);
   });
 });
