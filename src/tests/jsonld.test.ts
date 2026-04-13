@@ -10,19 +10,30 @@ type PostData = {
   tags: string[];
   author?: string;
   draft?: boolean;
+  updatedDate?: Date;
 };
 
-function buildBlogPostingSchema(postData: PostData, postUrl: string, ogImageUrl: string) {
+function buildBlogPostingSchema(postData: PostData, postUrl: string, ogImageUrl: string, siteBase = 'https://example.com') {
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: postData.title,
     description: postData.description,
     datePublished: postData.date.toISOString(),
-    dateModified: postData.date.toISOString(),
+    dateModified: (postData.updatedDate ?? postData.date).toISOString(),
     author: { '@type': 'Person', name: postData.author ?? 'Site Author' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'AstroStatic',
+      url: new URL('/', siteBase).href,
+    },
     url: postUrl,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': postUrl,
+    },
     image: ogImageUrl,
+    inLanguage: 'en-US',
     keywords: postData.tags.join(', '),
   };
 }
@@ -128,10 +139,48 @@ describe('JSON-LD schemas for blog post pages', () => {
       expect(schema.keywords).toBe('');
     });
 
-    it('dateModified is an ISO 8601 string matching datePublished when no modifiedDate', () => {
+    it('dateModified falls back to datePublished when updatedDate is absent', () => {
       const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
       expect(schema.dateModified).toBe('2025-01-15T00:00:00.000Z');
       expect(new Date(schema.dateModified).toISOString()).toBe(schema.dateModified);
+    });
+
+    it('dateModified uses updatedDate when present', () => {
+      const updatedPost: PostData = { ...publishedPost, updatedDate: new Date('2026-03-01T00:00:00.000Z') };
+      const schema = buildBlogPostingSchema(updatedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
+      expect(schema.dateModified).toBe('2026-03-01T00:00:00.000Z');
+      expect(schema.datePublished).toBe('2025-01-15T00:00:00.000Z');
+    });
+
+    it('publisher has @type Organization', () => {
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
+      expect(schema.publisher['@type']).toBe('Organization');
+    });
+
+    it('publisher name is AstroStatic', () => {
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
+      expect(schema.publisher.name).toBe('AstroStatic');
+    });
+
+    it('publisher url points to the site root', () => {
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL, SITE);
+      expect(schema.publisher.url).toBe(`${SITE}/`);
+    });
+
+    it('mainEntityOfPage has @type WebPage', () => {
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
+      expect(schema.mainEntityOfPage['@type']).toBe('WebPage');
+    });
+
+    it('mainEntityOfPage @id matches the post URL', () => {
+      const postUrl = `${SITE}/blog/hello-world`;
+      const schema = buildBlogPostingSchema(publishedPost, postUrl, OG_IMAGE_URL);
+      expect(schema.mainEntityOfPage['@id']).toBe(postUrl);
+    });
+
+    it('inLanguage is en-US', () => {
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
+      expect(schema.inLanguage).toBe('en-US');
     });
 
     it('schema is valid JSON (round-trips through JSON.parse)', () => {
