@@ -3,6 +3,7 @@
   "description": "RSI Starter: Astro 6 Static Site",
   "type": "module",
   "version": "1.0.0",
+  "engines": { "node": ">=22.12.0" },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && npx pagefind --site dist",
