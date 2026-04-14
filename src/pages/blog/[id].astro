@@ -66,6 +66,7 @@ const breadcrumbSchema = {
   type="article"
   articleMeta={{
     publishedTime: post.data.date.toISOString(),
+    modifiedTime: post.data.updatedDate?.toISOString(),
     author: post.data.author,
     tags: post.data.tags,
   }}

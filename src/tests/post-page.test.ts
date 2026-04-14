@@ -121,7 +121,16 @@ describe('[id].astro source structure', () => {
   });
 
   // -------------------------------------------------------------------------
-  // 6. Back-to-blog navigation
+  // 6. modifiedTime forwarding to BaseLayout
+  // -------------------------------------------------------------------------
+
+  it('forwards updatedDate as modifiedTime to BaseLayout for article:modified_time', () => {
+    expect(pageSource).toContain('modifiedTime');
+    expect(pageSource).toMatch(/updatedDate.*toISOString|toISOString.*updatedDate/);
+  });
+
+  // -------------------------------------------------------------------------
+  // 7. Back-to-blog navigation
   // -------------------------------------------------------------------------
 
   it('contains a back-to-blog link pointing to /blog', () => {

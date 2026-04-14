@@ -45,6 +45,11 @@ describe('BaseLayout', () => {
       expect(source).toContain('articleMeta?.publishedTime');
     });
 
+    it('conditionally renders article:modified_time meta tag', () => {
+      expect(source).toContain('article:modified_time');
+      expect(source).toContain('articleMeta?.modifiedTime');
+    });
+
     it('conditionally renders article:author meta tag', () => {
       // BaseLayout.astro:48-50
       expect(source).toContain('article:author');
@@ -58,9 +63,9 @@ describe('BaseLayout', () => {
     });
 
     it('gates article meta on type === article check', () => {
-      // All three blocks must be guarded by type === article to avoid polluting non-article pages
+      // All four blocks must be guarded by type === article to avoid polluting non-article pages
       const articleBlocks = (source.match(/type === .article./g) || []).length;
-      expect(articleBlocks).toBeGreaterThanOrEqual(3);
+      expect(articleBlocks).toBeGreaterThanOrEqual(4);
     });
   });
 });
