@@ -56,4 +56,10 @@ describe('astro.config.mjs CSP structure', () => {
   it('disables sourcemaps to prevent source exposure', () => {
     expect(configSource).toContain('sourcemap: false');
   });
+
+  it('sitemap integration includes a serialize function for lastmod', () => {
+    expect(configSource).toContain('serialize');
+    expect(configSource).toContain('lastmod');
+    expect(configSource).toContain('updatedDate');
+  });
 });
