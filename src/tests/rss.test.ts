@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
+import { GET } from '../pages/rss.xml.js';
 
 // Draft filter predicate from rss.xml.ts: getCollection('blog', ({ data }) => !data.draft)
 const isDraftExcluded = ({ data }: { data: { draft?: boolean } }) => !data.draft;
@@ -148,5 +149,23 @@ describe('rss feed logic', () => {
       expect(item.content).toContain('src=');
       expect(item.content).toContain('alt=');
     });
+  });
+});
+
+describe('rss.xml GET handler (real endpoint)', () => {
+  it('returns a Response with RSS XML content-type', async () => {
+    const ctx = { site: new URL('https://example.com') };
+    const response = await GET(ctx as never);
+    expect(response).toBeInstanceOf(Response);
+    const contentType = response.headers.get('content-type');
+    expect(contentType).toContain('xml');
+  });
+
+  it('returns RSS feed with correct title and metadata', async () => {
+    const ctx = { site: new URL('https://example.com') };
+    const response = await GET(ctx as never);
+    const text = await response.text();
+    expect(text).toContain('AstroStatic Blog');
+    expect(text).toContain('<language>en-us</language>');
   });
 });

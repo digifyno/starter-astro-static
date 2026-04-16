@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { GET } from '../pages/robots.txt.js';
 
 // Replicates the robots.txt generation logic from robots.txt.ts.
 // The real endpoint receives an Astro APIContext and uses context.site.
@@ -44,5 +45,25 @@ describe('robots.txt output', () => {
     const output = generateRobotsTxt('https://example.com');
     expect(output).toContain('sitemap-index.xml');
     expect(output).not.toContain('sitemap.xml\n');
+  });
+});
+
+describe('robots.txt GET handler (real endpoint)', () => {
+  it('returns a Response with correct content when site is provided', async () => {
+    const ctx = { site: new URL('https://example.com') };
+    const response = GET(ctx as never);
+    expect(response).toBeInstanceOf(Response);
+    const text = await response.text();
+    expect(text).toContain('User-agent: *');
+    expect(text).toContain('Allow: /');
+    expect(text).toContain('Sitemap: https://example.com/sitemap-index.xml');
+  });
+
+  it('returns a Response omitting Sitemap when site is undefined', async () => {
+    const ctx = { site: undefined };
+    const response = GET(ctx as never);
+    const text = await response.text();
+    expect(text).not.toContain('Sitemap');
+    expect(text).toContain('User-agent: *');
   });
 });

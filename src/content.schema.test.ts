@@ -1,5 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import { z } from 'zod';
+import { collections } from './content.config.js';
+
+// Verify the real content.config.ts exports a blog collection
+describe('content.config.ts exports', () => {
+  it('exports a collections object with a blog key', () => {
+    expect(collections).toBeDefined();
+    expect(collections).toHaveProperty('blog');
+  });
+});
 
 // Replicate the blog collection schema using plain Zod
 // (content.config.ts uses astro:content virtual modules unavailable outside builds)
