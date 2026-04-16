@@ -50,6 +50,24 @@ describe('remarkReadingTime', () => {
     expect(file.data.astro.frontmatter.minutesRead).toMatch(/^\d+ min read$/);
   });
 
+  it('injects wordCount (non-negative integer) into file.data.astro.frontmatter', () => {
+    const transform = remarkReadingTime();
+    const file = makeFile();
+    const text = Array(100).fill('word').join(' ');
+    transform(makeTree([text]), file);
+    const { wordCount } = file.data.astro.frontmatter;
+    expect(typeof wordCount).toBe('number');
+    expect(Number.isInteger(wordCount)).toBe(true);
+    expect(wordCount).toBeGreaterThanOrEqual(0);
+  });
+
+  it('wordCount is 0 for empty content', () => {
+    const transform = remarkReadingTime();
+    const file = makeFile();
+    transform(makeTree(['']), file);
+    expect(file.data.astro.frontmatter.wordCount).toBe(0);
+  });
+
   it('preserves existing astro frontmatter fields', () => {
     const transform = remarkReadingTime();
     const file = { data: { astro: { frontmatter: { title: 'My Post' } } } };

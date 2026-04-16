@@ -13,7 +13,7 @@ type PostData = {
   updatedDate?: Date;
 };
 
-function buildBlogPostingSchema(postData: PostData, postUrl: string, ogImageUrl: string, siteBase = 'https://example.com') {
+function buildBlogPostingSchema(postData: PostData, postUrl: string, ogImageUrl: string, siteBase = 'https://example.com', wordCount = 0) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -35,6 +35,7 @@ function buildBlogPostingSchema(postData: PostData, postUrl: string, ogImageUrl:
     image: ogImageUrl,
     inLanguage: 'en-US',
     keywords: postData.tags.join(', '),
+    wordCount,
   };
 }
 
@@ -181,6 +182,19 @@ describe('JSON-LD schemas for blog post pages', () => {
     it('inLanguage is en-US', () => {
       const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
       expect(schema.inLanguage).toBe('en-US');
+    });
+
+    it('wordCount is a non-negative integer', () => {
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL, SITE, 350);
+      expect(typeof schema.wordCount).toBe('number');
+      expect(Number.isInteger(schema.wordCount)).toBe(true);
+      expect(schema.wordCount).toBeGreaterThanOrEqual(0);
+      expect(schema.wordCount).toBe(350);
+    });
+
+    it('wordCount defaults to 0 for empty/very short posts', () => {
+      const schema = buildBlogPostingSchema(minimalPost, `${SITE}/blog/minimal-post`, `${SITE}/blog/minimal-post/og.png`);
+      expect(schema.wordCount).toBe(0);
     });
 
     it('schema is valid JSON (round-trips through JSON.parse)', () => {

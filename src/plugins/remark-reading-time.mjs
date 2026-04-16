@@ -12,11 +12,12 @@ export function remarkReadingTime() {
     visit(tree, ['text', 'code'], (node) => {
       text += node.value;
     });
-    const { minutes } = getReadingTime(text);
+    const { minutes, words } = getReadingTime(text);
     const rounded = Math.max(1, Math.ceil(minutes));
     // Inject into Astro's remark frontmatter pipeline
     if (!file.data.astro) file.data.astro = {};
     if (!file.data.astro.frontmatter) file.data.astro.frontmatter = {};
     file.data.astro.frontmatter.minutesRead = `${rounded} min read`;
+    file.data.astro.frontmatter.wordCount = words;
   };
 }

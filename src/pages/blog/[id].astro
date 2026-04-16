@@ -16,6 +16,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content, remarkPluginFrontmatter } = await render(post);
 const minutesRead: string = remarkPluginFrontmatter.minutesRead ?? '1 min read';
+const wordCount: number = remarkPluginFrontmatter.wordCount ?? 0;
 
 const siteBase = Astro.site ?? new URL(Astro.url.origin);
 const postUrl = new URL(Astro.url.pathname, siteBase).href;
@@ -45,6 +46,7 @@ const blogPostingSchema = {
   "image": ogImageUrl,
   "inLanguage": "en-US",
   "keywords": post.data.tags.join(', '),
+  "wordCount": wordCount,
 };
 
 const breadcrumbSchema = {
