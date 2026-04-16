@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import { marked } from 'marked';
+import sanitizeHtml from 'sanitize-html';
 import type { APIContext } from 'astro';
 
 export async function GET(context: APIContext) {
@@ -16,7 +17,13 @@ export async function GET(context: APIContext) {
       pubDate: post.data.date,
       description: post.data.description,
       link: `/blog/${post.id}/`,
-      content: marked.parse(post.body ?? ''),
+      content: sanitizeHtml(marked.parse(post.body ?? '') as string, {
+        allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+        allowedAttributes: {
+          ...sanitizeHtml.defaults.allowedAttributes,
+          img: ['src', 'alt', 'title', 'width', 'height'],
+        },
+      }),
     })),
     customData: '<language>en-us</language>',
   });

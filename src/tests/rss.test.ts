@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { marked } from 'marked';
+import sanitizeHtml from 'sanitize-html';
 
 // Draft filter predicate from rss.xml.ts: getCollection('blog', ({ data }) => !data.draft)
 const isDraftExcluded = ({ data }: { data: { draft?: boolean } }) => !data.draft;
@@ -14,7 +15,13 @@ const toRssItem = (post: { id: string; data: { title: string; description: strin
   pubDate: post.data.date,
   description: post.data.description,
   link: `/blog/${post.id}/`,
-  content: marked.parse(post.body ?? ''),
+  content: sanitizeHtml(marked.parse(post.body ?? '') as string, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      img: ['src', 'alt', 'title', 'width', 'height'],
+    },
+  }),
 });
 
 describe('rss feed logic', () => {
@@ -117,6 +124,29 @@ describe('rss feed logic', () => {
       };
       const item = toRssItem(post);
       expect(item.content).toBe('');
+    });
+
+    it('strips script tags from content', () => {
+      const post = {
+        id: 'xss-post',
+        data: { title: 'XSS', description: 'D', date: new Date() },
+        body: 'Safe text\n\n<script>alert("xss")</script>',
+      };
+      const item = toRssItem(post);
+      expect(item.content).not.toContain('<script');
+      expect(item.content).toContain('Safe text');
+    });
+
+    it('allows img tags with src and alt attributes', () => {
+      const post = {
+        id: 'img-post',
+        data: { title: 'Image', description: 'D', date: new Date() },
+        body: '![Cover image](./cover.png)',
+      };
+      const item = toRssItem(post);
+      expect(item.content).toContain('<img');
+      expect(item.content).toContain('src=');
+      expect(item.content).toContain('alt=');
     });
   });
 });
