@@ -37,6 +37,15 @@ describe('og.png.ts GET handler structure', () => {
     expect(source).toContain('post.data.title');
   });
 
+  it('renders the post description in the template', () => {
+    expect(source).toContain('post.data.description');
+  });
+
+  it('truncates long descriptions at 120 characters', () => {
+    expect(source).toContain('post.data.description.length > 120');
+    expect(source).toContain('slice(0, 117)');
+  });
+
   it('renders the post date in the template', () => {
     expect(source).toContain('post.data.date');
   });

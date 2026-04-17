@@ -62,6 +62,21 @@ export const GET: APIRoute = async ({ params }) => {
           {
             type: 'p',
             props: {
+              style: {
+                fontSize: 22,
+                color: '#cbd5e1',
+                margin: '8px 0',
+                fontWeight: 400,
+                lineHeight: 1.4,
+              },
+              children: post.data.description.length > 120
+                ? post.data.description.slice(0, 117) + '…'
+                : post.data.description,
+            },
+          },
+          {
+            type: 'p',
+            props: {
               style: { fontSize: 20, color: '#94a3b8', margin: '0', fontWeight: 400 },
               children: post.data.date.toLocaleDateString('en-US', {
                 dateStyle: 'medium',
