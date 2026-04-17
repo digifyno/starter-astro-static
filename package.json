@@ -3,7 +3,9 @@
   "description": "RSI Starter: Astro 6 Static Site",
   "type": "module",
   "version": "1.0.0",
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && npx pagefind --site dist",
@@ -17,7 +19,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.2.2",
-    "astro": "^6.1.5",
+    "astro": "^6.1.7",
     "satori": "^0.26.0",
     "tailwindcss": "^4.2.2"
   },
