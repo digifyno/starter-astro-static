@@ -5,6 +5,7 @@ import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import matter from 'gray-matter';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -28,18 +29,9 @@ export default defineConfig({
             postDates = new Map();
             for (const file of files) {
               const content = readFileSync(join(contentDir, file), 'utf-8');
-              const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
-              if (!fmMatch) continue;
-              const fm = fmMatch[1];
-              const draftMatch = fm.match(/^draft:\s*(.+)$/m);
-              if (draftMatch && draftMatch[1].trim() === 'true') continue;
-              const updatedDateMatch = fm.match(/^updatedDate:\s*(.+)$/m);
-              const dateMatch = fm.match(/^date:\s*(.+)$/m);
-              const rawDate = updatedDateMatch
-                ? updatedDateMatch[1].trim()
-                : dateMatch
-                  ? dateMatch[1].trim()
-                  : null;
+              const { data } = matter(content);
+              if (data.draft === true) continue;
+              const rawDate = data.updatedDate ?? data.date;
               if (!rawDate) continue;
               const id = basename(file, '.md');
               postDates.set(`/blog/${id}/`, new Date(rawDate).toISOString());
