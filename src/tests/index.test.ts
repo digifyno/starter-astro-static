@@ -213,3 +213,56 @@ describe('homepage latest posts count (slice(0, 3))', () => {
     expect(takeLatest([])).toHaveLength(0);
   });
 });
+
+// ---------------------------------------------------------------------------
+// WebSite JSON-LD SearchAction
+// ---------------------------------------------------------------------------
+
+describe('homepage WebSite JSON-LD SearchAction', () => {
+  function buildWebsiteSchema(siteUrl: string) {
+    return {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "AstroStatic",
+      "url": siteUrl,
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": `${siteUrl}search?q={search_term_string}`
+        },
+        "query-input": "required name=search_term_string"
+      }
+    };
+  }
+
+  it('includes a potentialAction SearchAction', () => {
+    const schema = buildWebsiteSchema('https://example.com/');
+    expect(schema.potentialAction).toBeDefined();
+    expect(schema.potentialAction['@type']).toBe('SearchAction');
+  });
+
+  it('urlTemplate uses siteUrl and appends search path', () => {
+    const schema = buildWebsiteSchema('https://example.com/');
+    expect(schema.potentialAction.target.urlTemplate).toBe(
+      'https://example.com/search?q={search_term_string}'
+    );
+  });
+
+  it('urlTemplate works with a custom siteUrl', () => {
+    const schema = buildWebsiteSchema('https://mysite.io/');
+    expect(schema.potentialAction.target.urlTemplate).toBe(
+      'https://mysite.io/search?q={search_term_string}'
+    );
+  });
+
+  it('query-input specifies required search_term_string', () => {
+    const schema = buildWebsiteSchema('https://example.com/');
+    expect(schema.potentialAction['query-input']).toBe('required name=search_term_string');
+  });
+
+  it('target has @type EntryPoint', () => {
+    const schema = buildWebsiteSchema('https://example.com/');
+    expect(schema.potentialAction.target['@type']).toBe('EntryPoint');
+  });
+});
