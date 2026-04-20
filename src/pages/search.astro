@@ -55,7 +55,9 @@ const isDev = import.meta.env.DEV;
     }
 
     // @ts-ignore: PagefindUI is set as a global by pagefind-ui.js
-    new window.PagefindUI({ element: '#search', showImages: false });
+    const params = new URLSearchParams(window.location.search);
+    const defaultQuery = params.get('q') ?? undefined;
+    new window.PagefindUI({ element: '#search', showImages: false, ...(defaultQuery ? { defaultQuery } : {}) });
 
     // Associate the visible label with the rendered search input
     const input = document.querySelector<HTMLInputElement>('.pagefind-ui__search-input');

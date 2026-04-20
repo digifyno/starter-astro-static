@@ -74,4 +74,13 @@ describe('search.astro source structure', () => {
     const lower = pageSource.toLowerCase();
     expect(lower.includes('dev') || lower.includes('development') || lower.includes('build')).toBe(true);
   });
+
+  it('reads the q URL parameter to pre-populate the search input', () => {
+    expect(pageSource).toContain("URLSearchParams(window.location.search)");
+    expect(pageSource).toContain("params.get('q')");
+  });
+
+  it('passes defaultQuery to PagefindUI when q param is present', () => {
+    expect(pageSource).toContain('defaultQuery');
+  });
 });
