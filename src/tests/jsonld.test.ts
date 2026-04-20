@@ -9,6 +9,7 @@ type PostData = {
   date: Date;
   tags: string[];
   author?: string;
+  authorUrl?: string;
   draft?: boolean;
   updatedDate?: Date;
 };
@@ -21,7 +22,11 @@ function buildBlogPostingSchema(postData: PostData, postUrl: string, ogImageUrl:
     description: postData.description,
     datePublished: postData.date.toISOString(),
     dateModified: (postData.updatedDate ?? postData.date).toISOString(),
-    author: { '@type': 'Person', name: postData.author ?? 'Site Author' },
+    author: {
+      '@type': 'Person',
+      name: postData.author ?? 'Site Author',
+      ...(postData.authorUrl ? { url: postData.authorUrl } : {}),
+    },
     publisher: {
       '@type': 'Organization',
       name: 'AstroStatic',
@@ -115,6 +120,22 @@ describe('JSON-LD schemas for blog post pages', () => {
     it('author has @type Person', () => {
       const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
       expect(schema.author['@type']).toBe('Person');
+    });
+
+    it('author.url is set when authorUrl frontmatter is present', () => {
+      const postWithAuthorUrl: PostData = { ...publishedPost, authorUrl: 'https://example.com/about/jane' };
+      const schema = buildBlogPostingSchema(postWithAuthorUrl, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
+      expect(schema.author.url).toBe('https://example.com/about/jane');
+    });
+
+    it('author.url is absent when authorUrl frontmatter is not set', () => {
+      const schema = buildBlogPostingSchema(publishedPost, `${SITE}/blog/hello-world`, OG_IMAGE_URL);
+      expect('url' in schema.author).toBe(false);
+    });
+
+    it('author.url is absent for minimal post with no authorUrl', () => {
+      const schema = buildBlogPostingSchema(minimalPost, `${SITE}/blog/minimal-post`, `${SITE}/blog/minimal-post/og.png`);
+      expect('url' in schema.author).toBe(false);
     });
 
     it('url is an absolute URL containing the post path', () => {

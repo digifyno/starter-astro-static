@@ -32,6 +32,7 @@ const blogPostingSchema = {
   "author": {
     "@type": "Person",
     "name": post.data.author ?? 'Site Author',
+    ...(post.data.authorUrl ? { "url": post.data.authorUrl } : {}),
   },
   "publisher": {
     "@type": "Organization",
