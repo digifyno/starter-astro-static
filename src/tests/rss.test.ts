@@ -11,11 +11,13 @@ const sortNewestFirst = (a: { data: { date: Date } }, b: { data: { date: Date } 
   b.data.date.valueOf() - a.data.date.valueOf();
 
 // Item mapper from rss.xml.ts
-const toRssItem = (post: { id: string; data: { title: string; description: string; date: Date }; body?: string }) => ({
+const toRssItem = (post: { id: string; data: { title: string; description: string; date: Date; tags?: string[]; author?: string }; body?: string }) => ({
   title: post.data.title,
   pubDate: post.data.date,
   description: post.data.description,
   link: `/blog/${post.id}/`,
+  categories: post.data.tags,
+  ...(post.data.author ? { customData: `<dc:creator>${post.data.author}</dc:creator>` } : {}),
   content: sanitizeHtml(marked.parse(post.body ?? '') as string, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
     allowedAttributes: {
@@ -149,6 +151,58 @@ describe('rss feed logic', () => {
       expect(item.content).toContain('src=');
       expect(item.content).toContain('alt=');
     });
+
+    it('includes categories when tags are present', () => {
+      const post = {
+        id: 'tagged-post',
+        data: { title: 'Tagged', description: 'D', date: new Date(), tags: ['astro', 'rss'] },
+      };
+      const item = toRssItem(post);
+      expect(item.categories).toEqual(['astro', 'rss']);
+    });
+
+    it('includes dc:creator customData when author is set', () => {
+      const post = {
+        id: 'authored-post',
+        data: { title: 'Authored', description: 'D', date: new Date(), author: 'Jane Doe' },
+      };
+      const item = toRssItem(post);
+      expect(item.customData).toBe('<dc:creator>Jane Doe</dc:creator>');
+    });
+
+    it('omits customData when author is absent', () => {
+      const post = {
+        id: 'no-author-post',
+        data: { title: 'No Author', description: 'D', date: new Date() },
+      };
+      const item = toRssItem(post);
+      expect(item.customData).toBeUndefined();
+    });
+  });
+});
+
+describe('rss.xml GET handler (real endpoint)', () => {
+  it('returns a Response with RSS XML content-type', async () => {
+    const ctx = { site: new URL('https://example.com') };
+    const response = await GET(ctx as never);
+    expect(response).toBeInstanceOf(Response);
+    const contentType = response.headers.get('content-type');
+    expect(contentType).toContain('xml');
+  });
+
+  it('returns RSS feed with correct title and metadata', async () => {
+    const ctx = { site: new URL('https://example.com') };
+    const response = await GET(ctx as never);
+    const text = await response.text();
+    expect(text).toContain('AstroStatic Blog');
+    expect(text).toContain('<language>en-us</language>');
+  });
+
+  it('includes xmlns:dc namespace declaration in rss element', async () => {
+    const ctx = { site: new URL('https://example.com') };
+    const response = await GET(ctx as never);
+    const text = await response.text();
+    expect(text).toContain('xmlns:dc="http://purl.org/dc/elements/1.1/"');
   });
 });
 
