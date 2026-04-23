@@ -32,6 +32,7 @@ function resolveImageAlt(imageAlt: string | undefined, description: string): str
 }
 
 const DEFAULT_LOCALE = 'en_US';
+const SITE_NAME = 'AstroStatic';
 
 // Default prop values from SEO.astro
 const DEFAULT_IMAGE = "/og-default.png";
@@ -151,6 +152,29 @@ describe("SEO.astro logic", () => {
   describe("og:locale", () => {
     it("always outputs en_US locale", () => {
       expect(DEFAULT_LOCALE).toBe("en_US");
+    });
+  });
+
+  describe("og:site_name", () => {
+    it('is the static constant "AstroStatic"', () => {
+      expect(SITE_NAME).toBe("AstroStatic");
+    });
+  });
+
+  describe("og:image:alt", () => {
+    it("uses the explicit imageAlt prop when provided", () => {
+      const result = resolveImageAlt("A photo of a mountain", "Post description");
+      expect(result).toBe("A photo of a mountain");
+    });
+
+    it("falls back to description when imageAlt is undefined", () => {
+      const result = resolveImageAlt(undefined, "Post about Astro SSG");
+      expect(result).toBe("Post about Astro SSG");
+    });
+
+    it("uses empty string imageAlt without falling back to description", () => {
+      const result = resolveImageAlt("", "Post description");
+      expect(result).toBe("");
     });
   });
 
