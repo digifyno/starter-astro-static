@@ -12,11 +12,15 @@ export async function GET(context: APIContext) {
     title: 'AstroStatic Blog',
     description: 'A content-heavy static site built with Astro and Tailwind CSS',
     site: context.site!,
+    xmlns: { dc: 'http://purl.org/dc/elements/1.1/' },
+    customData: '<language>en-us</language>',
     items: posts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.description,
       link: `/blog/${post.id}/`,
+      categories: post.data.tags,
+      ...(post.data.author ? { customData: `<dc:creator>${post.data.author}</dc:creator>` } : {}),
       content: sanitizeHtml(marked.parse(post.body ?? '') as string, {
         allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
         allowedAttributes: {
@@ -25,6 +29,5 @@ export async function GET(context: APIContext) {
         },
       }),
     })),
-    customData: '<language>en-us</language>',
   });
 }
