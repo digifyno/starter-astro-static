@@ -19,7 +19,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.2.2",
-    "astro": "^6.1.7",
+    "astro": "^6.1.9",
     "satori": "^0.26.0",
     "tailwindcss": "^4.2.2"
   },
