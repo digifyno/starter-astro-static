@@ -205,21 +205,3 @@ describe('rss.xml GET handler (real endpoint)', () => {
     expect(text).toContain('xmlns:dc="http://purl.org/dc/elements/1.1/"');
   });
 });
-
-describe('rss.xml GET handler (real endpoint)', () => {
-  it('returns a Response with RSS XML content-type', async () => {
-    const ctx = { site: new URL('https://example.com') };
-    const response = await GET(ctx as never);
-    expect(response).toBeInstanceOf(Response);
-    const contentType = response.headers.get('content-type');
-    expect(contentType).toContain('xml');
-  });
-
-  it('returns RSS feed with correct title and metadata', async () => {
-    const ctx = { site: new URL('https://example.com') };
-    const response = await GET(ctx as never);
-    const text = await response.text();
-    expect(text).toContain('AstroStatic Blog');
-    expect(text).toContain('<language>en-us</language>');
-  });
-});
