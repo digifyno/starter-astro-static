@@ -33,6 +33,9 @@ function resolveImageAlt(imageAlt: string | undefined, description: string): str
 
 const DEFAULT_LOCALE = 'en_US';
 const SITE_NAME = 'AstroStatic';
+const OG_IMAGE_WIDTH = '1200';
+const OG_IMAGE_HEIGHT = '630';
+const OG_IMAGE_TYPE = 'image/png';
 
 // Default prop values from SEO.astro
 const DEFAULT_IMAGE = "/og-default.png";
@@ -158,6 +161,20 @@ describe("SEO.astro logic", () => {
   describe("og:site_name", () => {
     it('is the static constant "AstroStatic"', () => {
       expect(SITE_NAME).toBe("AstroStatic");
+    });
+  });
+
+  describe("og:image dimension and type tags", () => {
+    it("og:image:width is hardcoded to 1200", () => {
+      expect(OG_IMAGE_WIDTH).toBe("1200");
+    });
+
+    it("og:image:height is hardcoded to 630", () => {
+      expect(OG_IMAGE_HEIGHT).toBe("630");
+    });
+
+    it("og:image:type is hardcoded to image/png", () => {
+      expect(OG_IMAGE_TYPE).toBe("image/png");
     });
   });
 
