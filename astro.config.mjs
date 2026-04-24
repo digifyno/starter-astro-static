@@ -12,6 +12,10 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   site: process.env.SITE_URL ?? 'https://example.com',
   output: 'static',
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover',
+  },
   image: {
     layout: 'constrained',
     responsiveStyles: true,
