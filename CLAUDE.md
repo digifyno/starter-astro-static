@@ -1,3 +1,9 @@
+<!-- rsi-worker-metadata
+  workerId=eed78728-9c83-454e-b22b-834cf8b88b9a
+  productId=99ea2264-6241-513a-9605-df93ce86112c
+  scopeConfigHash=7ec90ec5aa1a50e1
+  generatedAt=2026-04-24T05:11:32.054Z
+-->
 # Astro Static Site Starter
 
 ## Project Overview
