@@ -57,7 +57,7 @@ function sortTagEntries(entries: [string, number][]): [string, number][] {
 
 /** Build the tag page href for a tag chip on the index page. */
 function tagPageHref(tag: string): string {
-  return `/blog/tags/${tag}`;
+  return `/blog/tags/${encodeURIComponent(tag)}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -243,8 +243,8 @@ describe('tag page hrefs', () => {
     expect(tagPageHref('web-dev')).toBe('/blog/tags/web-dev');
   });
 
-  it('special characters are passed through unchanged (browser handles encoding)', () => {
-    expect(tagPageHref('c++')).toBe('/blog/tags/c++');
+  it('special characters are percent-encoded', () => {
+    expect(tagPageHref('c++')).toBe('/blog/tags/c%2B%2B');
   });
 });
 
