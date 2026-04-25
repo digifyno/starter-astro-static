@@ -130,7 +130,17 @@ describe('[id].astro source structure', () => {
   });
 
   // -------------------------------------------------------------------------
-  // 7. Back-to-blog navigation
+  // 7. Pagefind indexing
+  // -------------------------------------------------------------------------
+
+  it('article element has data-pagefind-body to restrict Pagefind indexing to post content', () => {
+    // Once any page uses data-pagefind-body, Pagefind only indexes pages that have
+    // it — keeping homepage, blog listing, and tag pages out of search results.
+    expect(pageSource).toContain('data-pagefind-body');
+  });
+
+  // -------------------------------------------------------------------------
+  // 8. Back-to-blog navigation
   // -------------------------------------------------------------------------
 
   it('contains a back-to-blog link pointing to /blog', () => {
