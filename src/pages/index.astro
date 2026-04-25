@@ -34,7 +34,10 @@ const websiteSchema = {
 };
 ---
 
-<BaseLayout title="AstroStatic - Content-First Static Sites">
+<BaseLayout
+  title="AstroStatic - Content-First Static Sites"
+  description="Astro 6 + Tailwind CSS starter template for content-heavy static sites. Includes blog, content collections, full-text search, RSS, and dark mode."
+>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
   </Fragment>
