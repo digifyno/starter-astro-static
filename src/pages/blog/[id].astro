@@ -78,7 +78,7 @@ const breadcrumbSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   </Fragment>
-  <article class="mx-auto max-w-3xl px-4 py-16">
+  <article class="mx-auto max-w-3xl px-4 py-16" data-pagefind-body>
     <header class="mb-8">
       <a href="/blog" class="text-sm text-blue-600 dark:text-blue-400 hover:underline rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400">&larr; Back to blog</a>
       <h1 class="mt-4 text-4xl font-bold">{post.data.title}</h1>
