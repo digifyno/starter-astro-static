@@ -139,6 +139,14 @@ describe('[id].astro source structure', () => {
     expect(pageSource).toContain('data-pagefind-body');
   });
 
+  it('tag chip anchors carry data-pagefind-filter="tag" for Pagefind tag filtering', () => {
+    // Pagefind 1.5 captures filter metadata from elements with data-pagefind-filter
+    // inside data-pagefind-body. Without this attribute the search UI cannot filter
+    // results by tag — the PagefindUI widget only renders a filter panel when the
+    // rebuilt index contains filter data.
+    expect(pageSource).toContain('data-pagefind-filter="tag"');
+  });
+
   // -------------------------------------------------------------------------
   // 8. Back-to-blog navigation
   // -------------------------------------------------------------------------
