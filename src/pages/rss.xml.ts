@@ -21,7 +21,7 @@ export async function GET(context: APIContext) {
       link: `/blog/${post.id}/`,
       categories: post.data.tags,
       ...(post.data.author ? { customData: `<dc:creator>${post.data.author}</dc:creator>` } : {}),
-      content: sanitizeHtml(marked.parse(post.body ?? '') as string, {
+      content: sanitizeHtml(marked.parse(post.body ?? '', { async: false }), {
         allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
         allowedAttributes: {
           ...sanitizeHtml.defaults.allowedAttributes,
