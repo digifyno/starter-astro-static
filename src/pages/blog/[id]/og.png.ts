@@ -1,7 +1,7 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -17,8 +17,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const GET: APIRoute = async ({ params }) => {
-  const posts = await getCollection('blog');
-  const post = posts.find((p) => p.id === params.id);
+  const post = await getEntry('blog', params.id!);
   if (!post) return new Response('Not found', { status: 404 });
 
   const siteUrl = import.meta.env.SITE_URL ?? 'https://example.com';
