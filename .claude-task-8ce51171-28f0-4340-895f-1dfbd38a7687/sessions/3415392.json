@@ -1,0 +1,1 @@
+{"pid":3415392,"sessionId":"c6deb27f-06a8-444a-a553-327649235554","cwd":"/home/rsi/rsi-worktrees/e7819334","startedAt":1777357011950,"procStart":"98043133","version":"2.1.119","peerProtocol":1,"kind":"interactive","entrypoint":"sdk-cli","name":"code:Fix marked.parse() type safety — use { async: fals","updatedAt":1777357011955}
